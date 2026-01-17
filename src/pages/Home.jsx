@@ -13,7 +13,9 @@ const languagePins = [
     strength: 4,
     flag: flagGermany,
     x: 48.8,
-    y: 42.7,
+    y: 43,
+    side: 'right',
+    offset: -26,
   },
   {
     id: 'english',
@@ -21,8 +23,10 @@ const languagePins = [
     level: 'Fluent',
     strength: 3,
     flag: flagUnitedStates,
-    x: 27.5,
-    y: 49,
+    x: 26.6,
+    y: 48.5,
+    side: 'right',
+    offset: -10,
   },
   {
     id: 'french',
@@ -30,8 +34,10 @@ const languagePins = [
     level: 'Basic',
     strength: 2,
     flag: flagFrance,
-    x: 47.3,
+    x: 47.5,
     y: 45.5,
+    side: 'left',
+    offset: 8,
   },
   {
     id: 'spanish',
@@ -39,8 +45,10 @@ const languagePins = [
     level: 'Basic',
     strength: 2,
     flag: flagSpain,
-    x: 46.5,
-    y: 49.1,
+    x: 46.3,
+    y: 49,
+    side: 'right',
+    offset: 28,
   },
 ]
 
@@ -132,15 +140,24 @@ const Home = () => {
               return (
               <div
                 key={pin.id}
-                className={`language-pin level-${pin.strength}${isActive ? ' is-active' : ''}`}
+                className={`language-pin level-${pin.strength} pin-${pin.side}${
+                  isActive ? ' is-active' : ''
+                }`}
                 style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-                onClick={() => setActivePin(isActive ? null : pin.id)}
+                onClick={() => {
+                  setActivePin(isActive ? null : pin.id)
+                }}
               >
                 <div className="language-pin-indicator">
                   <span className="pin-pulse" />
                   <img src={pin.flag} alt={`${pin.label} flag`} />
                 </div>
-                <div className="language-pin-card">
+                <div
+                  className="language-pin-card"
+                  style={{
+                    '--card-offset': `${pin.offset || 0}px`,
+                  }}
+                >
                   <div className="language-pin-label">
                     <span>{pin.label}</span>
                   </div>

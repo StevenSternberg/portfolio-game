@@ -266,6 +266,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 12px;
+  color: var(--ink);
 }
 
 .logo-card--missing {
@@ -318,6 +319,7 @@
 }
 
 
+
 .language-pin {
   position: absolute;
   transform: translate(-50%, -100%);
@@ -326,6 +328,11 @@
   min-width: 0;
   cursor: pointer;
   transition: transform 0.2s ease;
+}
+
+.language-pin.is-active,
+.language-pin:hover {
+  z-index: 4;
 }
 
 .language-pin::after {
@@ -362,8 +369,11 @@
 }
 
 .language-pin-card {
+  position: absolute;
+  left: 44px;
+  top: 50%;
   opacity: 0;
-  transform: translateY(8px) scale(0.98);
+  transform: translate(0, calc(-50% + var(--card-offset, 0px))) scale(0.98);
   pointer-events: none;
   padding: 8px 10px;
   border-radius: 14px;
@@ -374,11 +384,21 @@
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+.language-pin.pin-left .language-pin-card {
+  left: -10px;
+  transform: translate(-100%, calc(-50% + var(--card-offset, 0px))) scale(0.98);
+}
+
 .language-pin.is-active .language-pin-card,
 .language-pin:hover .language-pin-card {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate(0, calc(-50% + var(--card-offset, 0px))) scale(1);
   pointer-events: auto;
+}
+
+.language-pin.pin-left.is-active .language-pin-card,
+.language-pin.pin-left:hover .language-pin-card {
+  transform: translate(-100%, calc(-50% + var(--card-offset, 0px))) scale(1);
 }
 
 .language-pin.is-active .pin-pulse,
@@ -738,4 +758,12 @@
   .hud-legend {
     text-align: left;
   }
+}
+.career-link {
+  display: inline-flex;
+  margin-top: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
 }

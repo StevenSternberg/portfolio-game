@@ -56,20 +56,30 @@ const Career = () => {
                 ×
               </button>
               <div className="career-card-top">
-              <PixelLogo
-                src={activeEntry.logo}
-                alt={`${activeEntry.company} logo`}
-                width={170}
-                height={120}
-                pixelSize={2}
-                backgroundColor={
-                  activeEntry.company === 'Zattoo' ? 'rgba(255, 255, 255, 0.9)' : undefined
-                }
-              />
+                <PixelLogo
+                  src={activeEntry.logo}
+                  alt={`${activeEntry.company} logo`}
+                  width={170}
+                  height={120}
+                  pixelSize={2}
+                  backgroundColor={
+                    activeEntry.company === 'Zattoo' ? 'rgba(255, 255, 255, 0.9)' : undefined
+                  }
+                />
                 <div>
                   <p className="career-company">{activeEntry.company}</p>
                   <h3 className="career-role">{activeEntry.role}</h3>
                   <p className="career-period">{activeEntry.period}</p>
+                  {activeEntry.url && (
+                    <a
+                      className="career-link"
+                      href={activeEntry.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Visit company site
+                    </a>
+                  )}
                 </div>
               </div>
               <ul className="career-list">
@@ -89,7 +99,13 @@ const Career = () => {
         </div>
         <div className="logo-grid">
           {careerEntries.map((entry) => (
-            <div className="logo-card" key={entry.id}>
+            <a
+              className="logo-card"
+              key={entry.id}
+              href={entry.url}
+              target="_blank"
+              rel="noreferrer"
+            >
               <PixelLogo
                 src={entry.logo}
                 alt={`${entry.company} logo`}
@@ -101,7 +117,7 @@ const Career = () => {
                 }
               />
               <span>{entry.company}</span>
-            </div>
+            </a>
           ))}
         </div>
       </section>

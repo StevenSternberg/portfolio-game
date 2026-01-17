@@ -5,34 +5,21 @@ import quandooLogo from '../assets/logos/Quandoo.png'
 
 const careerEntries = [
   {
-    id: 'zattoo-2025',
-    logoKey: 'zattoo-2025',
+    id: 'zattoo',
+    logoKey: 'zattoo',
     company: 'Zattoo',
     role: 'Principal Product Manager DTC',
-    period: 'Jan 2025 - Present',
-    year: '2025',
-    detail: 'Strategic DTC growth and squad direction.',
-    logo: zattooLogo,
-    highlights: [
-      'Drive growth aligned with company vision.',
-      'Translate strategy into squad direction.',
-      'Enable teams with context and decisions.',
-      'Balance stakeholder and customer needs.',
-    ],
-  },
-  {
-    id: 'zattoo-2020',
-    logoKey: 'zattoo-2020',
-    company: 'Zattoo',
-    role: 'Senior Product Owner DTC',
-    period: 'Aug 2020 - Dec 2020',
+    period: 'Aug 2020 - Present',
     year: '2020',
-    detail: 'Led conversion squad and A/B tests.',
+    detail: 'DTC growth, conversion optimization, and squad leadership.',
     logo: zattooLogo,
+    url: 'https://zattoo.com/de',
     highlights: [
+      'Principal Product Manager DTC (Jan 2025 - Present).',
+      'Senior Product Owner DTC (Aug 2020 - Dec 2020).',
       'Optimized acquisition and retention via experiments.',
-      'Defined roadmaps aligned with OKRs.',
-      'Built Tableau dashboards for decisions.',
+      'Defined roadmaps aligned with OKRs and product strategy.',
+      'Built Tableau dashboards for decision-making.',
     ],
   },
   {
@@ -44,6 +31,7 @@ const careerEntries = [
     year: '2020',
     detail: 'Delivered B2B vision and roadmap.',
     logo: quandooLogo,
+    url: 'https://www.quandoo.de/en',
     highlights: [
       'Prioritized MVPs using OKRs and ICE model.',
       'Aligned stakeholders on milestones.',
@@ -59,6 +47,7 @@ const careerEntries = [
     year: '2018',
     detail: 'Migrated billing and affiliate programs.',
     logo: sparkLogo,
+    url: 'https://www.spark.net/',
     highlights: [
       'Integrated billing systems on a new platform.',
       'Defined KPIs with BI and DWH support.',
@@ -74,6 +63,7 @@ const careerEntries = [
     year: '2012',
     detail: 'Owned sportsbook delivery and integrations.',
     logo: mybetLogo,
+    url: 'https://www.mybet.com/en',
     highlights: [
       'Managed Scrum-based sportsbook development.',
       'Partnered with design, QA, and engineering.',
