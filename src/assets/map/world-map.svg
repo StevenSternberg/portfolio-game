@@ -1,0 +1,43 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stylized world map">
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1020"/>
+      <stop offset="100%" stop-color="#12213d"/>
+    </linearGradient>
+    <linearGradient id="land" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2a44"/>
+      <stop offset="100%" stop-color="#2a3552"/>
+    </linearGradient>
+    <filter id="glow">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#3a86ff" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ocean)"/>
+
+  <g fill="url(#land)" stroke="#2f3a5a" stroke-width="2">
+    <path d="M140 210 L270 170 L400 200 L520 260 L520 340 L430 380 L320 350 L210 300 L150 250 Z"/>
+    <path d="M460 380 L520 360 L600 380 L660 430 L650 500 L560 520 L480 480 Z"/>
+    <path d="M650 230 L780 200 L910 230 L980 280 L980 350 L900 390 L780 360 L700 300 Z"/>
+    <path d="M930 400 L1020 370 L1120 390 L1220 460 L1210 520 L1120 560 L1010 530 L940 470 Z"/>
+    <path d="M1120 250 L1230 220 L1360 240 L1450 300 L1460 360 L1370 400 L1240 380 L1150 320 Z"/>
+    <path d="M1220 560 L1340 540 L1460 580 L1520 640 L1500 700 L1400 720 L1280 680 L1210 620 Z"/>
+    <path d="M1040 600 L1110 580 L1180 600 L1200 650 L1140 680 L1060 660 Z"/>
+    <path d="M320 520 L400 500 L480 520 L520 580 L500 640 L420 660 L340 620 Z"/>
+    <path d="M520 640 L620 620 L700 650 L740 710 L700 760 L600 760 L540 710 Z"/>
+  </g>
+
+  <g fill="#0f172a" opacity="0.4">
+    <circle cx="240" cy="520" r="6"/>
+    <circle cx="620" cy="300" r="5"/>
+    <circle cx="860" cy="460" r="6"/>
+    <circle cx="1180" cy="320" r="5"/>
+    <circle cx="1320" cy="620" r="6"/>
+  </g>
+
+  <g fill="none" stroke="#3a86ff" stroke-width="3" opacity="0.6" filter="url(#glow)">
+    <path d="M520 340 C620 380, 740 420, 900 390"/>
+    <path d="M700 300 C860 280, 1020 310, 1120 390"/>
+    <path d="M420 660 C560 620, 680 600, 780 560"/>
+  </g>
+</svg>
