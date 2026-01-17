@@ -68,6 +68,27 @@
   gap: 10px;
 }
 
+.nav-primary {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.nav-secondary {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.menu-more {
+  display: none;
+  justify-self: start;
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  background: rgba(252, 163, 17, 0.15);
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;
@@ -644,6 +665,71 @@
   color: var(--ink);
 }
 
+.hud-right {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+  max-width: 360px;
+}
+
+.hud-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.hud-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 245, 242, 0.2);
+  background: rgba(12, 18, 35, 0.6);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(248, 245, 242, 0.6);
+}
+
+.hud-badge.is-on {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(252, 163, 17, 0.2);
+}
+
+.hud-stats {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.stat-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.stat-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(248, 245, 242, 0.3);
+  background: rgba(248, 245, 242, 0.2);
+}
+
+.stat-dot.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
 .footer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -740,6 +826,22 @@
     display: grid;
   }
 
+  .nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .menu-more {
+    display: inline-flex;
+  }
+
+  .nav-secondary {
+    display: none;
+  }
+
+  .nav-secondary.nav-secondary-open {
+    display: grid;
+  }
+
   .hero {
     grid-template-columns: 1fr;
   }
@@ -753,6 +855,11 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
+  }
+
+  .hud-right {
+    justify-items: start;
+    max-width: 100%;
   }
 
   .hud-legend {

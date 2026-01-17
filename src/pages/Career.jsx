@@ -1,22 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import CareerGame from '../components/CareerGame'
 import PixelLogo from '../components/PixelLogo'
 import careerEntries from '../data/careerEntries'
 
 const Career = () => {
   const [activeEntry, setActiveEntry] = useState(null)
+  const [collectedIds, setCollectedIds] = useState([])
 
-  useEffect(() => {
-    if (!activeEntry) {
-      return undefined
+  const stats = useMemo(() => {
+    const base = {
+      agile: 0,
+      monetization: 0,
+      experimentation: 0,
+      leadership: 0,
     }
+    collectedIds.forEach((id) => {
+      const entry = careerEntries.find((item) => item.id === id)
+      if (entry?.stat) {
+        base[entry.stat] += 1
+      }
+    })
+    return base
+  }, [collectedIds])
 
-    const timer = setTimeout(() => {
-      setActiveEntry(null)
-    }, 6000)
-
-    return () => clearTimeout(timer)
-  }, [activeEntry])
+  const handleCollect = (id) => {
+    if (!id) {
+      return
+    }
+    setCollectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
+  }
 
   return (
     <div className="page">
@@ -42,7 +54,13 @@ const Career = () => {
       </section>
 
       <section className="career-stage">
-        <CareerGame entries={careerEntries} onSelect={setActiveEntry} />
+        <CareerGame
+          entries={careerEntries}
+          collectedIds={collectedIds}
+          stats={stats}
+          onCollect={handleCollect}
+          onSelect={setActiveEntry}
+        />
 
         {activeEntry && (
           <div className="career-popup">
