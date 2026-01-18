@@ -4,6 +4,9 @@ import flagGermany from '../assets/map/flags/germany.png'
 import flagUnitedStates from '../assets/map/flags/united-states.png'
 import flagFrance from '../assets/map/flags/france.png'
 import flagSpain from '../assets/map/flags/spain.png'
+import phoneIcon from '../assets/logos/Phone_icon.png'
+import emailIcon from '../assets/logos/Email.png'
+import linkedinIcon from '../assets/logos/quadratisches-linkedin-logo-isolated-on-white-background_469489-892.avif'
 
 const languagePins = [
   {
@@ -69,12 +72,9 @@ const Home = () => {
         <div className="hero-meta">
           <p>Berlin, Germany</p>
           <p>10+ years in B2C/B2B SaaS, streaming, and marketplaces</p>
-          <div className="hero-links">
-            <a href="mailto:stevensternberg2105@gmail.com">Email</a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
-          </div>
+          <a className="hero-cta" href="#contact">
+            Contact me
+          </a>
         </div>
       </header>
 
@@ -220,19 +220,30 @@ const Home = () => {
         <div className="cv-grid">
           <article className="cv-card">
             <h3>Phone</h3>
-            <p>Available on request</p>
+            <div className="contact-item">
+              <img className="contact-icon" src={phoneIcon} alt="" aria-hidden="true" />
+              <span>Available on request</span>
+            </div>
           </article>
           <article className="cv-card">
             <h3>Email</h3>
-            <p>stevensternberg2105@gmail.com</p>
+            <div className="contact-item">
+              <img className="contact-icon" src={emailIcon} alt="" aria-hidden="true" />
+              <span>stevensternberg2105@gmail.com</span>
+            </div>
           </article>
           <article className="cv-card">
             <h3>LinkedIn</h3>
-            <p>
-              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+            <div className="contact-item">
+              <img className="contact-icon" src={linkedinIcon} alt="" aria-hidden="true" />
+              <a
+                href="https://www.linkedin.com/in/stevensternberg"
+                target="_blank"
+                rel="noreferrer"
+              >
                 linkedin.com/in/stevensternberg
               </a>
-            </p>
+            </div>
           </article>
         </div>
       </section>
@@ -250,13 +261,8 @@ const Home = () => {
           <p>Conversion optimization, monetization, and team enablement.</p>
         </div>
         <div>
-          <h2>Links</h2>
-          <p>
-            <a href="mailto:stevensternberg2105@gmail.com">Email</a> ·{' '}
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-              LinkedIn
-            </a>
-          </p>
+          <h2>Highlights</h2>
+          <p>Product, streaming, marketplaces, and growth outcomes.</p>
         </div>
       </footer>
     </div>

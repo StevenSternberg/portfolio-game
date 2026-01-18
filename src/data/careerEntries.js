@@ -2,6 +2,10 @@ import mybetLogo from '../assets/logos/mybet.jpg'
 import sparkLogo from '../assets/logos/spark.png'
 import zattooLogo from '../assets/logos/zattoo.png'
 import quandooLogo from '../assets/logos/Quandoo.png'
+import trophyAgile from '../assets/trophies/Agile.png'
+import trophyMonetization from '../assets/trophies/Menetization.png'
+import trophyExperimentation from '../assets/trophies/Experimentation.png'
+import trophyLeadership from '../assets/trophies/Leadership.png'
 
 const careerEntries = [
   {
@@ -17,6 +21,8 @@ const careerEntries = [
     badge: 'Agile',
     stat: 'agile',
     lane: 0,
+    trophy: trophyAgile,
+    outcome: 'Established Scrum delivery cadence and tighter release quality.',
     highlights: [
       'Managed Scrum-based sportsbook development.',
       'Partnered with design, QA, and engineering.',
@@ -37,6 +43,8 @@ const careerEntries = [
     badge: 'Monetization',
     stat: 'monetization',
     lane: 1,
+    trophy: trophyMonetization,
+    outcome: 'Improved revenue focus with KPI-driven backlog decisions.',
     highlights: [
       'Integrated billing systems on a new platform.',
       'Defined KPIs with BI and DWH support.',
@@ -56,6 +64,8 @@ const careerEntries = [
     badge: 'Experimentation',
     stat: 'experimentation',
     lane: 0,
+    trophy: trophyExperimentation,
+    outcome: 'Shipped MVPs faster through OKR + ICE prioritization.',
     highlights: [
       'Prioritized MVPs using OKRs and ICE model.',
       'Aligned stakeholders on milestones.',
@@ -75,6 +85,8 @@ const careerEntries = [
     badge: 'Leadership',
     stat: 'leadership',
     lane: 1,
+    trophy: trophyLeadership,
+    outcome: 'Led DTC growth focus across strategy, experiments, and teams.',
     highlights: [
       'Principal Product Manager DTC (Jan 2025 - Present).',
       'Senior Product Owner DTC (Aug 2020 - Dec 2020).',

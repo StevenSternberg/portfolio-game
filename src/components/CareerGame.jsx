@@ -5,9 +5,16 @@ import skyLayer from '../assets/backgrounds/Sky_final.png'
 import midLayer from '../assets/backgrounds/Mid_final.png'
 import foreLayer from '../assets/backgrounds/fore_final.png'
 
-const CareerGame = ({ entries = [], collectedIds = [], stats, onCollect, onSelect }) => {
+const CareerGame = ({
+  entries = [],
+  collectedIds = [],
+  lastCollectedId,
+  onCollect,
+  onSelect,
+}) => {
   const containerRef = useRef(null)
   const gameRef = useRef(null)
+  const inputRef = useRef({ left: false, right: false, jump: false })
 
   useEffect(() => {
     if (!containerRef.current || gameRef.current || entries.length === 0) {
@@ -203,15 +210,18 @@ const CareerGame = ({ entries = [], collectedIds = [], stats, onCollect, onSelec
         const speed = 200
         const body = this.player.body
 
-        if (this.cursors.left.isDown) {
+        const leftPressed = this.cursors.left.isDown || inputRef.current.left
+        const rightPressed = this.cursors.right.isDown || inputRef.current.right
+
+        if (leftPressed) {
           body.setVelocityX(-speed)
-        } else if (this.cursors.right.isDown) {
+        } else if (rightPressed) {
           body.setVelocityX(speed)
         } else {
           body.setVelocityX(0)
         }
 
-        if (this.spaceKey.isDown && body.blocked.down) {
+        if ((this.spaceKey.isDown || inputRef.current.jump) && body.blocked.down) {
           body.setVelocityY(-420)
         }
 
@@ -283,54 +293,79 @@ const CareerGame = ({ entries = [], collectedIds = [], stats, onCollect, onSelec
       <div className="game-overlay">
         <div className="hud">
           <span className="hud-title">Career Quest</span>
-          <span className="hud-text">Playable timeline of product impact.</span>
         </div>
         <div className="hud-right">
-          <div className="hud-badges">
+          <div className="hud-trophy-row">
             {entries.map((entry) => (
-              <span
+              <div
                 key={entry.id}
-                className={`hud-badge${collectedIds.includes(entry.id) ? ' is-on' : ''}`}
+                className={`hud-trophy-chip${collectedIds.includes(entry.id) ? ' is-on' : ''}`}
+                title={entry.badge}
               >
-                {entry.badge}
-              </span>
+                <img src={entry.trophy} alt={`${entry.badge} trophy`} />
+              </div>
             ))}
           </div>
-          <div className="hud-stats">
-            {stats && (
-              <>
-                <div className="stat-row">
-                  <span>Agile</span>
-                  <div className="stat-dots">
-                    <span className={`stat-dot${stats.agile ? ' is-on' : ''}`} />
-                  </div>
-                </div>
-                <div className="stat-row">
-                  <span>Monetization</span>
-                  <div className="stat-dots">
-                    <span className={`stat-dot${stats.monetization ? ' is-on' : ''}`} />
-                  </div>
-                </div>
-                <div className="stat-row">
-                  <span>Experimentation</span>
-                  <div className="stat-dots">
-                    <span className={`stat-dot${stats.experimentation ? ' is-on' : ''}`} />
-                  </div>
-                </div>
-                <div className="stat-row">
-                  <span>Leadership</span>
-                  <div className="stat-dots">
-                    <span className={`stat-dot${stats.leadership ? ' is-on' : ''}`} />
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-          <div className="hud-legend">
-            <span>Arrow keys to move</span>
-            <span>Touch markers for highlights</span>
-          </div>
+          {entries.length > 0 && collectedIds.length === entries.length && (
+            <div className="hud-complete">Quest Complete</div>
+          )}
+          {lastCollectedId && (
+            <div className="hud-trophy">
+              <img
+                src={entries.find((entry) => entry.id === lastCollectedId)?.trophy}
+                alt="Latest trophy"
+              />
+              <span>Latest trophy</span>
+            </div>
+          )}
         </div>
+      </div>
+      <div className="mobile-controls">
+        <button
+          type="button"
+          className="control-btn"
+          onPointerDown={() => {
+            inputRef.current.left = true
+          }}
+          onPointerUp={() => {
+            inputRef.current.left = false
+          }}
+          onPointerLeave={() => {
+            inputRef.current.left = false
+          }}
+        >
+          ◀
+        </button>
+        <button
+          type="button"
+          className="control-btn"
+          onPointerDown={() => {
+            inputRef.current.right = true
+          }}
+          onPointerUp={() => {
+            inputRef.current.right = false
+          }}
+          onPointerLeave={() => {
+            inputRef.current.right = false
+          }}
+        >
+          ▶
+        </button>
+        <button
+          type="button"
+          className="control-btn control-jump"
+          onPointerDown={() => {
+            inputRef.current.jump = true
+          }}
+          onPointerUp={() => {
+            inputRef.current.jump = false
+          }}
+          onPointerLeave={() => {
+            inputRef.current.jump = false
+          }}
+        >
+          ⤒
+        </button>
       </div>
       <div className="game-container" ref={containerRef} />
     </section>
