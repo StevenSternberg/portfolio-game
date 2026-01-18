@@ -600,7 +600,7 @@
 
 .game-shell {
   position: relative;
-  min-height: clamp(640px, 80vh, 920px);
+  min-height: clamp(720px, 88vh, 1080px);
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid var(--border);

@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import Phaser from 'phaser'
 import playerSprite from '../assets/Character/Bildschirmfoto 2026-01-17 um 00.40.11.png'
-import skyLayer from '../assets/backgrounds/ChatGPT Image 17. Jan. 2026, 22_44_55.png'
-import midLayer from '../assets/backgrounds/ChatGPT Image 17. Jan. 2026, 22_46_11.png'
-import foreLayer from '../assets/backgrounds/ChatGPT Image 17. Jan. 2026, 22_46_16.png'
+import skyLayer from '../assets/backgrounds/Sky_final.png'
+import midLayer from '../assets/backgrounds/Mid_final.png'
+import foreLayer from '../assets/backgrounds/fore_final.png'
 
 const CareerGame = ({ entries = [], collectedIds = [], stats, onCollect, onSelect }) => {
   const containerRef = useRef(null)
@@ -40,34 +40,41 @@ const CareerGame = ({ entries = [], collectedIds = [], stats, onCollect, onSelec
       create() {
         const { width, height } = this.scale
         const levelWidth = Math.max(width, 360 * (entries.length + 1))
-        const groundY = height * 0.78
+        let groundY = height * 0.78
         const baseMarkerHeight = 92
 
-        const mid = this.add.tileSprite(0, 0, levelWidth, height, 'bg-mid')
+        const skyScale = 0.6
+        const sky = this.add.image(0, 0, 'bg-sky')
+        sky.setOrigin(0, 0)
+        sky.setDisplaySize(levelWidth, height * 0.7 * skyScale)
+        sky.setScrollFactor(0)
+        sky.setDepth(0)
+
+        const midScale = 0.8
+        const midHeight = Math.round(height * 0.55 * midScale)
+        const mid = this.add.image(0, 0, 'bg-mid')
         mid.setOrigin(0, 0)
-        mid.setScrollFactor(0.45)
-        mid.setDepth(0)
+        mid.setDisplaySize(levelWidth, midHeight)
+        mid.setScrollFactor(0.35)
+        mid.setDepth(1)
+
+        const foreTexture = this.textures.get('bg-fore')
+        const foreSource = foreTexture.getSourceImage()
+        const foreScale = 0.5
+        const foreHeight = Math.round(foreSource.height * foreScale)
+        const foreY = Math.round(height - foreHeight - 12)
+        const fore = this.add.tileSprite(0, foreY, levelWidth / foreScale, foreSource.height, 'bg-fore')
+        fore.setOrigin(0, 0)
+        fore.setScale(foreScale)
+        fore.setScrollFactor(0.7)
+        fore.setDepth(2)
 
         this.cameras.main.setBounds(0, 0, levelWidth, height)
         this.physics.world.setBounds(0, 0, levelWidth, height)
 
-        const grid = this.add.graphics()
-        grid.lineStyle(1, 0x1d2b48, 0.5)
-        for (let x = 0; x < levelWidth; x += 32) {
-          grid.lineBetween(x, 0, x, height)
-        }
-        for (let y = 0; y < height; y += 32) {
-          grid.lineBetween(0, y, levelWidth, y)
-        }
-
-        const horizon = this.add.rectangle(
-          levelWidth / 2,
-          height * 0.68,
-          levelWidth,
-          4,
-          0xfca311,
-        )
-        horizon.setAlpha(0.6)
+        mid.setY(foreY - midHeight)
+        const midFloorOffset = Math.round(height * 0.42)
+        groundY = mid.y + midFloorOffset
 
         const ground = this.add.rectangle(levelWidth / 2, groundY, levelWidth, 24, 0x101a30)
         this.physics.add.existing(ground, true)
