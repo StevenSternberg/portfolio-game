@@ -7,6 +7,8 @@ import flagSpain from '../assets/map/flags/spain.png'
 import phoneIcon from '../assets/logos/Phone_icon.png'
 import emailIcon from '../assets/logos/Email.png'
 import linkedinIcon from '../assets/logos/quadratisches-linkedin-logo-isolated-on-white-background_469489-892.avif'
+import careerEntries from '../data/careerEntries'
+import characterBase from '../assets/Character/Gemini_Generated_Image_unw3mjunw3mjunw3.png'
 
 const languagePins = [
   {
@@ -62,64 +64,223 @@ const Home = () => {
     <div className="page">
       <header className="hero" id="profile">
         <div>
-          <p className="hero-kicker">Steven Sternberg</p>
-          <h1>Senior Product Manager</h1>
-          <p className="hero-subtitle">
-            I turn customer problems into measurable outcomes through strategy,
-            stakeholder alignment, and decisive prioritization.
-          </p>
-        </div>
-        <div className="hero-meta">
-          <p>Berlin, Germany</p>
-          <p>10+ years in B2C/B2B SaaS, streaming, and marketplaces</p>
-          <a className="hero-cta" href="#contact">
-            Contact me
-          </a>
+          <div className="hero-spacer" aria-hidden="true" />
         </div>
       </header>
 
-      <section className="cv-section" id="education">
-        <div className="cv-heading">
-          <h2>Education</h2>
-          <p>Design foundation that powers product leadership.</p>
-        </div>
-        <div className="cv-grid">
-          <article className="cv-card">
-            <h3>Mediadesign Hochschule Berlin</h3>
-            <p className="cv-role">Bachelor of Arts in Media Design · 2009 - 2011</p>
-          </article>
-        </div>
-      </section>
+      <section className="pip-root" id="cv">
+        <header className="pip-root-header">
+          <h2>Steven Sternberg</h2>
+          <p>
+            I turn customer problems into measurable outcomes through strategy,
+            stakeholder alignment, and decisive prioritization.
+          </p>
+        </header>
+        <div className="pip-root-grid">
+          <section className="pip-column" id="profile-panel">
+            <header className="pip-column-header">
+              <h3>Profile</h3>
+            </header>
+            <div className="pip-column-body">
+              <div className="pip-avatar-card">
+                <img src={characterBase} alt="Pixel portrait of Steven" />
+                <div>
+                  <p className="pip-avatar-title">Character Base</p>
+                  <p className="pip-avatar-subtitle">Leveling through product milestones.</p>
+                  <div className="pip-avatar-meta">
+                    <p>Berlin, Germany</p>
+                    <p>10+ years in B2C/B2B SaaS, streaming, and marketplaces</p>
+                  </div>
+                </div>
+              </div>
 
-      <section className="cv-section" id="certifications">
-        <div className="cv-heading">
-          <h2>Certifications</h2>
-          <p>Validated product leadership and discovery expertise.</p>
-        </div>
-        <div className="cv-grid">
-          <article className="cv-card">
-            <h3>Certified Scrum Product Owner</h3>
-          </article>
-          <article className="cv-card">
-            <h3>Pendo Product Discovery</h3>
-          </article>
-        </div>
-      </section>
+              <section className="pip-panel" id="contact">
+                <header className="pip-header">
+                  <h2>Contact</h2>
+                  <p>Open to new product challenges and collaborations.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    <div className="pip-row">
+                      <span className="pip-label">Phone</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value contact-item">
+                        <img className="contact-icon" src={phoneIcon} alt="" aria-hidden="true" />
+                        Available on request
+                      </span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Email</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value contact-item">
+                        <img className="contact-icon" src={emailIcon} alt="" aria-hidden="true" />
+                        stevensternberg2105@gmail.com
+                      </span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">LinkedIn</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value contact-item">
+                        <img
+                          className="contact-icon"
+                          src={linkedinIcon}
+                          alt=""
+                          aria-hidden="true"
+                        />
+                        <a
+                          href="https://www.linkedin.com/in/stevensternberg"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          linkedin.com/in/stevensternberg
+                        </a>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
 
-      <section className="cv-section" id="skills">
-        <div className="cv-heading">
-          <h2>Skills</h2>
-          <p>Tools and methodologies that fuel execution.</p>
-        </div>
-        <div className="cv-grid">
-          <article className="cv-card">
-            <h3>Tools</h3>
-            <p>Jira, Confluence, Tableau, Indicative, SQL Developer, Figma, Photoshop</p>
-          </article>
-          <article className="cv-card">
-            <h3>Product</h3>
-            <p>Agile, Scrum, A/B Testing, Roadmapping, KPI Definition</p>
-          </article>
+              <section className="pip-panel" id="hobbies">
+                <header className="pip-header">
+                  <h2>Hobbies</h2>
+                  <p>Creative fuel outside the product world.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    <div className="pip-row">
+                      <span className="pip-label">01</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Photography</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">02</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Music</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">03</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Travel</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="pip-panel" id="languages-cta">
+                <header className="pip-header">
+                  <h2>Languages</h2>
+                  <p>Global collaboration and customer empathy.</p>
+                </header>
+                <div className="pip-body">
+                  <a className="pip-cta" href="#languages">
+                    Open Language Map
+                  </a>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section className="pip-column" id="role">
+            <header className="pip-column-header">
+              <h3>Senior Product Manager</h3>
+            </header>
+            <div className="pip-column-body">
+              <section className="pip-panel" id="experience">
+                <header className="pip-header">
+                  <h2>Experience</h2>
+                  <p>Timeline summary before the quest.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    {careerEntries.map((entry) => (
+                      <div className="pip-row" key={entry.id}>
+                        <span className="pip-label">{entry.company}</span>
+                        <span className="pip-dots" aria-hidden="true" />
+                        <span className="pip-value">
+                          {entry.role} · {entry.period}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <a className="pip-cta" href="#career">
+                    Launch Career Quest
+                  </a>
+                </div>
+              </section>
+
+              <section className="pip-panel" id="education">
+                <header className="pip-header">
+                  <h2>Education</h2>
+                  <p>Design foundation that powers product leadership.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    <div className="pip-row">
+                      <span className="pip-label">School</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Mediadesign Hochschule Berlin</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Degree</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">BA Media Design</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Years</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">2009–2011</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="pip-panel" id="certifications">
+                <header className="pip-header">
+                  <h2>Certifications</h2>
+                  <p>Validated product leadership and discovery expertise.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    <div className="pip-row">
+                      <span className="pip-label">CSPO</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Scrum Product Owner</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Pendo</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Product Discovery</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="pip-panel" id="skills">
+                <header className="pip-header">
+                  <h2>Skills</h2>
+                  <p>Tools and methodologies that fuel execution.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    <div className="pip-row">
+                      <span className="pip-label">Tools</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">
+                        Jira, Confluence, Tableau, Indicative, SQL Dev, Figma, Photoshop
+                      </span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Product</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">
+                        Agile, Scrum, A/B Testing, Roadmapping, KPIs
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -180,24 +341,6 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="cv-section" id="hobbies">
-        <div className="cv-heading">
-          <h2>Hobbies</h2>
-          <p>Creative fuel outside the product world.</p>
-        </div>
-        <div className="cv-grid">
-          <article className="cv-card">
-            <h3>Photography</h3>
-          </article>
-          <article className="cv-card">
-            <h3>Music</h3>
-          </article>
-          <article className="cv-card">
-            <h3>Travel</h3>
-          </article>
-        </div>
-      </section>
-
       <section className="cta-card">
         <div>
           <p className="cta-kicker">Career path</p>
@@ -210,42 +353,6 @@ const Home = () => {
         <a className="cta-button" href="#career">
           Open Career Quest
         </a>
-      </section>
-
-      <section className="cv-section" id="contact">
-        <div className="cv-heading">
-          <h2>Contact</h2>
-          <p>Open to new product challenges and collaborations.</p>
-        </div>
-        <div className="cv-grid">
-          <article className="cv-card">
-            <h3>Phone</h3>
-            <div className="contact-item">
-              <img className="contact-icon" src={phoneIcon} alt="" aria-hidden="true" />
-              <span>Available on request</span>
-            </div>
-          </article>
-          <article className="cv-card">
-            <h3>Email</h3>
-            <div className="contact-item">
-              <img className="contact-icon" src={emailIcon} alt="" aria-hidden="true" />
-              <span>stevensternberg2105@gmail.com</span>
-            </div>
-          </article>
-          <article className="cv-card">
-            <h3>LinkedIn</h3>
-            <div className="contact-item">
-              <img className="contact-icon" src={linkedinIcon} alt="" aria-hidden="true" />
-              <a
-                href="https://www.linkedin.com/in/stevensternberg"
-                target="_blank"
-                rel="noreferrer"
-              >
-                linkedin.com/in/stevensternberg
-              </a>
-            </div>
-          </article>
-        </div>
       </section>
 
       <footer className="footer">

@@ -258,6 +258,20 @@ const CareerGame = ({
       width: containerRef.current.clientWidth,
       height: containerRef.current.clientHeight,
       backgroundColor: '#0b1020',
+      input: {
+        mouse: {
+          capture: false,
+          preventDefaultDown: false,
+          preventDefaultUp: false,
+          preventDefaultMove: false,
+          preventDefaultWheel: false,
+        },
+        touch: {
+          capture: false,
+          preventDefault: false,
+        },
+        keyboard: { capture: [] },
+      },
       physics: {
         default: 'arcade',
         arcade: {
