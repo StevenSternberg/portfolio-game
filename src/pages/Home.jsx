@@ -8,7 +8,7 @@ import phoneIcon from '../assets/logos/Phone_icon.png'
 import emailIcon from '../assets/logos/Email.png'
 import linkedinIcon from '../assets/logos/quadratisches-linkedin-logo-isolated-on-white-background_469489-892.avif'
 import careerEntries from '../data/careerEntries'
-import AvatarSprite from '../components/AvatarSprite'
+import AvatarSprite from '../components/AvatarSprite.jsx'
 import kmpiCertificate from '../assets/certificates/KMPI_Sternberg.pdf'
 import scrumCertificate from '../assets/certificates/afc8f0a2-4625-4a35-8a4b-167442dde7f0.jpg'
 
