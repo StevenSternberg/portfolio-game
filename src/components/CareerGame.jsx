@@ -1,9 +1,13 @@
 import { useEffect, useRef } from 'react'
 import Phaser from 'phaser'
-import playerSprite from '../assets/Character/Bildschirmfoto 2026-01-17 um 00.40.11.png'
+import playerSprite from '../assets/Character/Sprite_frames_white.png'
 import skyLayer from '../assets/backgrounds/Sky_final.png'
 import midLayer from '../assets/backgrounds/Mid_final.png'
 import foreLayer from '../assets/backgrounds/fore_final.png'
+
+const PLAYER_FRAME_WIDTH = 576
+const PLAYER_FRAME_HEIGHT = 928
+const PLAYER_SCALE = 0.11
 
 const CareerGame = ({
   entries = [],
@@ -38,7 +42,10 @@ const CareerGame = ({
         entries.forEach((entry) => {
           this.load.image(entry.logoKey, entry.logo)
         })
-        this.load.image('player', playerSprite)
+        this.load.spritesheet('player', playerSprite, {
+          frameWidth: PLAYER_FRAME_WIDTH,
+          frameHeight: PLAYER_FRAME_HEIGHT,
+        })
         this.load.image('bg-sky', skyLayer)
         this.load.image('bg-mid', midLayer)
         this.load.image('bg-fore', foreLayer)
@@ -87,23 +94,55 @@ const CareerGame = ({
         this.physics.add.existing(ground, true)
         ground.setDepth(3)
 
-        const player = this.physics.add.image(80, groundY - 80, 'player')
-        player.setDisplaySize(56, 56)
-        player.body.setSize(player.displayWidth * 0.6, player.displayHeight * 0.7, true)
+        const playerTexture = this.textures.get('player')
+        playerTexture.setFilter(Phaser.Textures.FilterMode.NEAREST)
+
+        const player = this.physics.add.sprite(80, groundY - 80, 'player', 0)
+        player.setScale(PLAYER_SCALE)
+        player.body.setSize(player.displayWidth * 0.5, player.displayHeight * 0.7, true)
         player.body.setCollideWorldBounds(true)
         player.body.setDrag(800, 0)
         player.body.setMaxVelocity(260, 520)
         player.setDepth(6)
         this.player = player
 
-        this.cameras.main.startFollow(player, true, 0.08, 0.08)
+        if (!this.anims.exists('player-idle')) {
+          this.anims.create({
+            key: 'player-idle',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: -1,
+          })
+        }
 
-        this.playerLabel = this.add.text(player.x - 28, player.y - 52, 'Steven', {
-          fontFamily: '"Press Start 2P", monospace',
-          fontSize: '9px',
-          color: '#fca311',
-        })
-        this.playerLabel.setDepth(6)
+        if (!this.anims.exists('player-run')) {
+          this.anims.create({
+            key: 'player-run',
+            frames: this.anims.generateFrameNumbers('player', { start: 2, end: 5 }),
+            frameRate: 10,
+            repeat: -1,
+          })
+        }
+
+        if (!this.anims.exists('player-jump')) {
+          this.anims.create({
+            key: 'player-jump',
+            frames: [{ key: 'player', frame: 6 }],
+            frameRate: 1,
+            repeat: 0,
+          })
+        }
+
+        if (!this.anims.exists('player-fall')) {
+          this.anims.create({
+            key: 'player-fall',
+            frames: [{ key: 'player', frame: 7 }],
+            frameRate: 1,
+            repeat: 0,
+          })
+        }
+
+        this.cameras.main.startFollow(player, true, 0.08, 0.08)
 
         const startX = 220
         const step = (levelWidth - startX - 120) / (entries.length - 1)
@@ -215,8 +254,10 @@ const CareerGame = ({
 
         if (leftPressed) {
           body.setVelocityX(-speed)
+          this.player.setFlipX(true)
         } else if (rightPressed) {
           body.setVelocityX(speed)
+          this.player.setFlipX(false)
         } else {
           body.setVelocityX(0)
         }
@@ -225,8 +266,16 @@ const CareerGame = ({
           body.setVelocityY(-420)
         }
 
-        if (this.playerLabel) {
-          this.playerLabel.setPosition(this.player.x - 24, this.player.y - 38)
+        if (!body.blocked.down) {
+          if (body.velocity.y < 0) {
+            this.player.anims.play('player-jump', true)
+          } else {
+            this.player.anims.play('player-fall', true)
+          }
+        } else if (Math.abs(body.velocity.x) > 5) {
+          this.player.anims.play('player-run', true)
+        } else {
+          this.player.anims.play('player-idle', true)
         }
 
         if (this.activeMilestone && this.activeMarker) {

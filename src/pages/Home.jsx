@@ -8,7 +8,9 @@ import phoneIcon from '../assets/logos/Phone_icon.png'
 import emailIcon from '../assets/logos/Email.png'
 import linkedinIcon from '../assets/logos/quadratisches-linkedin-logo-isolated-on-white-background_469489-892.avif'
 import careerEntries from '../data/careerEntries'
-import characterBase from '../assets/Character/Gemini_Generated_Image_unw3mjunw3mjunw3.png'
+import AvatarSprite from '../components/AvatarSprite'
+import kmpiCertificate from '../assets/certificates/KMPI_Sternberg.pdf'
+import scrumCertificate from '../assets/certificates/afc8f0a2-4625-4a35-8a4b-167442dde7f0.jpg'
 
 const languagePins = [
   {
@@ -83,7 +85,7 @@ const Home = () => {
             </header>
             <div className="pip-column-body">
               <div className="pip-avatar-card">
-                <img src={characterBase} alt="Pixel portrait of Steven" />
+                <AvatarSprite />
                 <div>
                   <p className="pip-avatar-title">Character Base</p>
                   <p className="pip-avatar-subtitle">Leveling through product milestones.</p>
@@ -172,6 +174,33 @@ const Home = () => {
                   <p>Global collaboration and customer empathy.</p>
                 </header>
                 <div className="pip-body">
+                  <div className="pip-rows">
+                    {languagePins.map((pin) => (
+                      <div className="pip-row" key={pin.id}>
+                        <span className="pip-label">{pin.label}</span>
+                        <span className="pip-dots" aria-hidden="true" />
+                        <span className="pip-value">
+                          {pin.level}
+                          <span
+                            className="language-battery-inline"
+                            aria-label={`${pin.label} proficiency ${pin.level}`}
+                          >
+                            <span className="language-battery-cells">
+                              {[1, 2, 3, 4].map((step) => (
+                                <span
+                                  key={step}
+                                  className={`language-battery-cell${
+                                    step <= pin.strength ? ' is-on' : ''
+                                  }`}
+                                />
+                              ))}
+                            </span>
+                            <span className="language-battery-cap" aria-hidden="true" />
+                          </span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                   <a className="pip-cta" href="#languages">
                     Open Language Map
                   </a>
@@ -244,12 +273,25 @@ const Home = () => {
                     <div className="pip-row">
                       <span className="pip-label">CSPO</span>
                       <span className="pip-dots" aria-hidden="true" />
-                      <span className="pip-value">Scrum Product Owner</span>
+                      <span className="pip-value">
+                        <a href={scrumCertificate} target="_blank" rel="noreferrer">
+                          Scrum Product Owner
+                        </a>
+                      </span>
                     </div>
                     <div className="pip-row">
                       <span className="pip-label">Pendo</span>
                       <span className="pip-dots" aria-hidden="true" />
                       <span className="pip-value">Product Discovery</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">KMPI</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">
+                        <a href={kmpiCertificate} target="_blank" rel="noreferrer">
+                          Kanban verstehen
+                        </a>
+                      </span>
                     </div>
                   </div>
                 </div>
