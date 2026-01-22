@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import CareerGame from '../components/CareerGame'
 import PixelLogo from '../components/PixelLogo'
-import careerEntries from '../data/careerEntries'
+import careerEntries from '../../../data/careerEntries'
 
 const Career = () => {
   const [activeEntry, setActiveEntry] = useState(null)
@@ -42,35 +42,36 @@ const Career = () => {
 
   return (
     <div className="page">
-      <header className="page-header">
-        <div>
-          <p className="page-kicker">Career path</p>
-          <h1>Career Quest</h1>
-          <p>
+      <section className="career-shell">
+        <header className="career-shell-header">
+          <div className="career-shell-title">
+            <p className="career-shell-kicker">Career path</p>
+            <h1>Career Quest</h1>
+          </div>
+          <p className="career-shell-subtitle">
             Traverse the milestones, explore impact, and discover how each role
             shaped product outcomes.
           </p>
-        </div>
-      </header>
+        </header>
 
-      <section className="career-intro">
-        <div className="career-intro-copy">
-          <h2>Play as Steven</h2>
-          <p>
-            Navigate the timeline as a character. Touch each milestone to reveal
-            the story behind the role.
-          </p>
-        </div>
-      </section>
+        <section className="career-intro">
+          <div className="career-intro-copy">
+            <h2>Play as Steven</h2>
+            <p>
+              Navigate the timeline as a character. Touch each milestone to reveal
+              the story behind the role.
+            </p>
+          </div>
+        </section>
 
-      <section className="career-stage">
-        <CareerGame
-          entries={careerEntries}
-          collectedIds={collectedIds}
-          lastCollectedId={lastCollectedId}
-          onCollect={handleCollect}
-          onSelect={setActiveEntry}
-        />
+        <section className="career-stage">
+          <CareerGame
+            entries={careerEntries}
+            collectedIds={collectedIds}
+            lastCollectedId={lastCollectedId}
+            onCollect={handleCollect}
+            onSelect={setActiveEntry}
+          />
 
         {activeEntry && (
           <div className="career-popup">
@@ -217,6 +218,7 @@ const Career = () => {
             </div>
           </div>
         )}
+        </section>
       </section>
 
       <section className="logo-strip">

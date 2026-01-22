@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import spriteWave from '../assets/Character/Sprite_wave.png'
+import spriteWave from '../../../assets/Character/Sprite_wave.png'
 
 const FRAME_COLS = 4
 const FRAME_ROWS = 2

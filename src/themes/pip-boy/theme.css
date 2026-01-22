@@ -1,3 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+:root {
+  font-family: "Space Grotesk", sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #f8f5f2;
+  background-color: #0b1020;
+  --ink: #f8f5f2;
+  --ink-muted: #e2e8f0;
+  --accent: #fca311;
+  --accent-strong: #ffb84d;
+  --surface: rgba(12, 18, 35, 0.7);
+  --surface-strong: rgba(12, 18, 35, 0.9);
+  --border: rgba(248, 245, 242, 0.12);
+  --border-strong: rgba(248, 245, 242, 0.3);
+  --shadow: 0 22px 50px rgba(2, 6, 23, 0.5);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: radial-gradient(circle at top left, #12213d, #0b1020 50%);
+  color: var(--ink);
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Space Grotesk", sans-serif;
+}
+
 .app-shell {
   min-height: 100vh;
   display: flex;
@@ -226,41 +260,6 @@
   background: rgba(12, 18, 35, 0.5);
 }
 
-.cta-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px;
-  border-radius: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-
-.cta-kicker {
-  font-family: "Press Start 2P", monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-
-.cta-card h2 {
-  font-size: clamp(20px, 3vw, 32px);
-  margin: 10px 0;
-}
-
-.cta-button {
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #0b1020;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 12px;
-}
-
 .page-header {
   display: grid;
   gap: 12px;
@@ -280,18 +279,75 @@
   gap: 16px;
 }
 
-.career-intro {
+.career-shell {
+  border: 1px solid var(--accent);
+  border-radius: 24px;
+  padding: 12px;
+  background: rgba(8, 14, 28, 0.75);
   display: grid;
   gap: 12px;
-  padding: 22px 24px;
+}
+
+.career-shell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid rgba(252, 163, 17, 0.3);
+}
+
+.career-shell-title {
+  display: grid;
+  gap: 6px;
+}
+
+.career-shell-kicker {
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.career-shell-title h1 {
+  font-family: "Press Start 2P", monospace;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.career-shell-subtitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  max-width: 420px;
+}
+
+.career-intro {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
   border-radius: 20px;
-  border: 1px solid var(--border);
-  background: linear-gradient(135deg, rgba(12, 18, 35, 0.92), rgba(12, 18, 35, 0.6));
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(248, 245, 242, 0.2);
+  background: rgba(10, 16, 32, 0.6);
 }
 
 .career-intro h2 {
-  margin: 0;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.career-intro p {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
 }
 
 .logo-grid {
@@ -565,6 +621,10 @@
 
 .career-stage {
   position: relative;
+  border-radius: 20px;
+  border: 1px solid rgba(248, 245, 242, 0.2);
+  background: rgba(10, 16, 32, 0.6);
+  padding: 10px;
 }
 
 .career-popup {
@@ -1239,10 +1299,6 @@
     grid-template-columns: 1fr;
   }
 
-  .cta-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
   .cv-columns {
     grid-template-columns: 1fr;
@@ -1250,6 +1306,11 @@
 
   .pip-root-grid {
     grid-template-columns: 1fr;
+  }
+
+  .career-shell-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .game-overlay {

@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import worldMap from '../assets/map/Gemini.png'
-import flagGermany from '../assets/map/flags/germany.png'
-import flagUnitedStates from '../assets/map/flags/united-states.png'
-import flagFrance from '../assets/map/flags/france.png'
-import flagSpain from '../assets/map/flags/spain.png'
-import phoneIcon from '../assets/logos/Phone_icon.png'
-import emailIcon from '../assets/logos/Email.png'
-import linkedinIcon from '../assets/logos/quadratisches-linkedin-logo-isolated-on-white-background_469489-892.avif'
-import careerEntries from '../data/careerEntries'
+import worldMap from '../../../assets/map/Gemini.png'
+import flagGermany from '../../../assets/map/flags/germany.png'
+import flagUnitedStates from '../../../assets/map/flags/united-states.png'
+import flagFrance from '../../../assets/map/flags/france.png'
+import flagSpain from '../../../assets/map/flags/spain.png'
+import phoneIcon from '../../../assets/logos/Phone_icon.png'
+import emailIcon from '../../../assets/logos/Email.png'
+import linkedinIcon from '../../../assets/logos/quadratisches-linkedin-logo-isolated-on-white-background_469489-892.avif'
+import careerEntries from '../../../data/careerEntries'
 import AvatarSprite from '../components/AvatarSprite.jsx'
-import kmpiCertificate from '../assets/certificates/KMPI_Sternberg.pdf'
-import scrumCertificate from '../assets/certificates/afc8f0a2-4625-4a35-8a4b-167442dde7f0.jpg'
+import kmpiCertificate from '../../../assets/certificates/KMPI_Sternberg.pdf'
+import scrumCertificate from '../../../assets/certificates/afc8f0a2-4625-4a35-8a4b-167442dde7f0.jpg'
 
 const languagePins = [
   {
@@ -381,20 +381,6 @@ const Home = () => {
             })}
           </div>
         </div>
-      </section>
-
-      <section className="cta-card">
-        <div>
-          <p className="cta-kicker">Career path</p>
-          <h2>Play through the milestones</h2>
-          <p>
-            Explore the highlights, metrics, and impact across roles with an
-            interactive timeline.
-          </p>
-        </div>
-        <a className="cta-button" href="#career">
-          Open Career Quest
-        </a>
       </section>
 
       <footer className="footer">

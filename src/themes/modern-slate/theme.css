@@ -1,0 +1,56 @@
+:root {
+  font-family: "Space Grotesk", sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #0f172a;
+  background-color: #f8fafc;
+  --accent: #0f172a;
+  --surface: #ffffff;
+  --surface-strong: #f1f5f9;
+  --border: rgba(15, 23, 42, 0.12);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: linear-gradient(160deg, #f8fafc, #e2e8f0);
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Space Grotesk", sans-serif;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.modern-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.modern-card {
+  max-width: 520px;
+  width: 100%;
+  padding: 32px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 12px;
+}
+
+.modern-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 11px;
+}

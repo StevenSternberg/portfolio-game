@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:pip-boy": "VITE_THEME=pip-boy vite",
     "build": "vite build",
+    "build:pip-boy": "VITE_THEME=pip-boy vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:pip-boy": "VITE_THEME=pip-boy vite preview"
   },
   "dependencies": {
     "phaser": "^3.90.0",

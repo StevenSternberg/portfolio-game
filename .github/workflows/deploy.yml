@@ -31,7 +31,12 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          themes=(pip-boy modern-slate)
+          rm -rf dist
+          for theme in "${themes[@]}"; do
+            VITE_THEME="$theme" npm run build -- --outDir "dist/$theme"
+          done
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

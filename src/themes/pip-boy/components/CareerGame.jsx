@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import Phaser from 'phaser'
-import playerSprite from '../assets/Character/Sprite_frames_white.png'
-import skyLayer from '../assets/backgrounds/Sky_final.png'
-import midLayer from '../assets/backgrounds/Mid_final.png'
-import foreLayer from '../assets/backgrounds/fore_final.png'
+import playerSprite from '../../../assets/Character/Sprite_frames_white.png'
+import skyLayer from '../../../assets/backgrounds/Sky_final.png'
+import midLayer from '../../../assets/backgrounds/Mid_final.png'
+import foreLayer from '../../../assets/backgrounds/fore_final.png'
 
 const PLAYER_FRAME_WIDTH = 576
 const PLAYER_FRAME_HEIGHT = 928
