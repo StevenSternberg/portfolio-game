@@ -765,26 +765,6 @@ function App() {
                 <span>Roadmapping</span>
                 <span>KPI Definition</span>
               </div>
-              <div className="resume-divider" />
-              <p className="modern-kicker">Languages</p>
-              <div className="resume-languages">
-                <div>
-                  <span>German</span>
-                  <strong>Native</strong>
-                </div>
-                <div>
-                  <span>English</span>
-                  <strong>Fluent</strong>
-                </div>
-                <div>
-                  <span>French</span>
-                  <strong>Basic</strong>
-                </div>
-                <div>
-                  <span>Spanish</span>
-                  <strong>Basic</strong>
-                </div>
-              </div>
             </div>
           </aside>
           <div className="resume-main">
@@ -863,6 +843,26 @@ function App() {
                 <div>
                   <h3>Bachelor of Arts in Media Design</h3>
                   <p>Mediadesign Hochschule Berlin · 2009 - 2011</p>
+                </div>
+              </div>
+              <div className="resume-divider" />
+              <p className="modern-kicker">Languages</p>
+              <div className="resume-languages">
+                <div>
+                  <span>German</span>
+                  <strong>Native</strong>
+                </div>
+                <div>
+                  <span>English</span>
+                  <strong>Fluent</strong>
+                </div>
+                <div>
+                  <span>French</span>
+                  <strong>Basic</strong>
+                </div>
+                <div>
+                  <span>Spanish</span>
+                  <strong>Basic</strong>
                 </div>
               </div>
             </div>
