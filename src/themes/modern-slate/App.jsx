@@ -5,50 +5,9 @@ import headphonesIcon from '../../assets/design/modern_slate_design/headphones.p
 import travelIcon from '../../assets/design/modern_slate_design/travelling.png'
 import cspoBadge from '../../assets/certificates/434d64c7-6b7f-47ee-8cfd-0a4e84eb122e.png'
 import discoveryBadge from '../../assets/certificates/product-discovery-certification.png'
+import kmpiBadge from '../../assets/certificates/Lean_Kanban_University.png'
 import kmpiPdf from '../../assets/certificates/KMPI_Sternberg.pdf'
 import './theme.css'
-
-const tileData = [
-  {
-    id: 'impact',
-    label: 'Impact',
-    title: 'Revenue + Retention',
-    stat: '+18% DTC conversion',
-    summary: 'Designed pricing + onboarding experiments across streaming and marketplace products.',
-    bullets: ['Scaled A/B testing cadence', 'Lifecycle journeys improved', 'Retention loops tightened'],
-  },
-  {
-    id: 'growth',
-    label: 'Growth',
-    title: 'Acquisition + Activation',
-    stat: '3x funnel velocity',
-    summary: 'Built growth frameworks and cross-team rituals to accelerate learning.',
-    bullets: ['North-star alignment', 'Experiment backlog system', 'Growth playbooks'],
-  },
-  {
-    id: 'leadership',
-    label: 'Leadership',
-    title: 'Teams + Alignment',
-    stat: '4 squads aligned',
-    summary: 'Led multi-team roadmapping with exec stakeholders and product ops.',
-    bullets: ['Quarterly planning rhythm', 'OKR clarity', 'Cross-team rituals'],
-  },
-  {
-    id: 'craft',
-    label: 'Craft',
-    title: 'Discovery + Strategy',
-    stat: '10+ yrs PM',
-    summary: 'Customer research, insight synthesis, and product narratives that move teams.',
-    bullets: ['Voice of customer', 'Problem framing', 'Narrative decks'],
-  },
-]
-
-const statStrip = [
-  { label: 'Years', value: '10+' },
-  { label: 'Products', value: '7' },
-  { label: 'Experiments', value: '120+' },
-  { label: 'Teams', value: '4' },
-]
 
 const priorityLevels = [
   { id: 'high', label: 'High' },
@@ -137,7 +96,6 @@ const simulatorColumns = [
 ]
 
 function App() {
-  const [activeId, setActiveId] = useState(tileData[0]?.id)
   const [tickets, setTickets] = useState(simulatorTickets)
   const [lastReleasedId, setLastReleasedId] = useState(null)
   const [lastMovedId, setLastMovedId] = useState(null)
@@ -151,6 +109,7 @@ function App() {
   const [hasShownDevelopmentIntro, setHasShownDevelopmentIntro] = useState(false)
   const [showReleaseIntro, setShowReleaseIntro] = useState(false)
   const [hasShownReleaseIntro, setHasShownReleaseIntro] = useState(false)
+  const [showDiceModal, setShowDiceModal] = useState(false)
   const [pendingStep, setPendingStep] = useState(null)
   const [simulationStep, setSimulationStep] = useState(0)
   const [diceRolled, setDiceRolled] = useState(false)
@@ -173,17 +132,22 @@ function App() {
   const diceIntervalRef = useRef(null)
   const diceTimeoutRef = useRef(null)
   const targetScore = 8
-  const requiredAction = !hasStarted ? 'start' : !diceRolled ? 'roll' : 'advance'
+  const lastIndex = simulatorSteps.length - 1
+  const currentStep = simulatorSteps[simulationStep] ?? simulatorSteps[0]
+  const currentStage = currentStep.id
+  const requiredAction = !hasStarted
+    ? 'start'
+    : currentStage === 'refinement' && !refinementRoll
+      ? 'research'
+      : !diceRolled
+        ? 'roll'
+        : 'advance'
   const canAdvance =
     !hasStarted ||
     (simulationStep >= lastIndex) ||
     (diceRolled && movesUsed > 0)
   const highlightAdvance =
     requiredAction === 'start' || (requiredAction === 'advance' && canAdvance)
-  const activeTile = useMemo(
-    () => tileData.find((tile) => tile.id === activeId) || tileData[0],
-    [activeId],
-  )
   const ticketsByStage = useMemo(() => {
     return simulatorSteps.reduce((acc, stage) => {
       acc[stage.id] = tickets.filter((ticket) => ticket.stage === stage.id)
@@ -206,6 +170,13 @@ function App() {
     () => tickets.filter((ticket) => ticket.stage === 'release'),
     [tickets],
   )
+  const lastMovedStage = useMemo(() => {
+    if (!lastMovedId) {
+      return null
+    }
+    const ticket = tickets.find((item) => item.id === lastMovedId)
+    return ticket?.stage ?? null
+  }, [tickets, lastMovedId])
 
   useEffect(() => {
     return () => {
@@ -217,8 +188,16 @@ function App() {
       }
     }
   }, [])
-  const currentStep = simulatorSteps[simulationStep] ?? simulatorSteps[0]
-  const currentStage = currentStep.id
+
+  useEffect(() => {
+    if (
+      (requiredAction === 'roll' || requiredAction === 'research') &&
+      !showDiceModal &&
+      !diceRolling
+    ) {
+      setShowDiceModal(true)
+    }
+  }, [requiredAction, showDiceModal, diceRolling])
   const stageOrder = useMemo(() => {
     return simulatorSteps.reduce((acc, step, index) => {
       acc[step.id] = index
@@ -247,7 +226,6 @@ function App() {
     const ticket = tickets.find((item) => item.stage === currentStage)
     return ticket?.id ?? null
   }, [tickets, currentStage, hasStarted])
-  const lastIndex = simulatorSteps.length - 1
   const discoveryComplete = hasStarted && simulationStep >= 3
   const deliveryComplete = hasStarted && simulationStep >= 4
 
@@ -260,6 +238,7 @@ function App() {
       clearTimeout(diceTimeoutRef.current)
       diceTimeoutRef.current = null
     }
+    setShowDiceModal(false)
     setDiceRolled(false)
     setDiceResult(null)
     setDiceDisplay(null)
@@ -304,10 +283,14 @@ function App() {
     if (stageId === 'release' && !scoredIds.includes(ticketId)) {
       const ticket = tickets.find((item) => item.id === ticketId)
       if (ticket) {
-        const delta = ticket.fit === 'high' ? 2 : ticket.fit === 'med' ? 1 : -1
+        const baseDelta = ticket.fit === 'high' ? 2 : ticket.fit === 'med' ? 1 : -1
+        const impactDelta = ticket.impactDelta ?? 0
+        const riskDelta = ticket.riskDelta ?? 0
+        const delta = baseDelta + impactDelta
         setImpactScore((value) => value + delta)
-        if (ticket.fit === 'low') {
-          setRiskScore((value) => value + 1)
+        const riskHit = (ticket.fit === 'low' ? 1 : 0) + riskDelta
+        if (riskHit > 0) {
+          setRiskScore((value) => value + riskHit)
         }
         setScoredIds((prev) => [...prev, ticketId])
         setDiceLog((prev) => [
@@ -352,7 +335,6 @@ function App() {
         },
       ])
       setSurpriseTicketId(null)
-      setSimulationStep(stageOrder.delivery)
     }
     setMovesUsed((value) => value + 1)
   }
@@ -551,24 +533,6 @@ function App() {
       setMovesAllowed(roll <= 2 ? 1 : roll <= 4 ? 2 : 2)
       setMovesUsed(0)
       setNextRollBoost(isPartial)
-      if (currentStage === 'refinement' && !refinementRoll) {
-        const insight =
-          roll <= 2
-            ? 'Mixed signals: needs deeper validation.'
-            : roll <= 4
-              ? 'Moderate clarity: pain exists, scope still fuzzy.'
-              : 'Clear signal: high customer pain and urgency.'
-        setRefinementRoll(roll)
-        setRefinementInsight(insight)
-        setDiceLog((prev) => [
-          ...prev,
-          {
-            id: `research-${Date.now()}`,
-            label: `Research roll ${roll}`,
-            effect: insight,
-          },
-        ])
-      }
       if (surpriseId) {
         setSurpriseTicketId(surpriseId)
       }
@@ -641,6 +605,39 @@ function App() {
     }, rollDurationMs)
   }
 
+  const handleRollResearch = () => {
+    if (!hasStarted || refinementRoll) {
+      return
+    }
+    const roll = Math.floor(Math.random() * 6) + 1
+    const clarity = roll <= 2 ? 'low' : roll <= 4 ? 'medium' : 'high'
+    const insight =
+      roll <= 2
+        ? 'Mixed signals: needs deeper validation.'
+        : roll <= 4
+          ? 'Moderate clarity: pain exists, scope still fuzzy.'
+          : 'Clear signal: high customer pain and urgency.'
+    const impactDelta = roll >= 5 ? 1 : 0
+    const riskDelta = roll <= 2 ? 1 : 0
+    setRefinementRoll(roll)
+    setRefinementInsight(insight)
+    setTickets((prev) =>
+      prev.map((ticket) =>
+        ticket.stage === 'refinement'
+          ? { ...ticket, clarity, impactDelta, riskDelta }
+          : ticket,
+      ),
+    )
+    setDiceLog((prev) => [
+      ...prev,
+      {
+        id: `research-${Date.now()}`,
+        label: `Research roll ${roll}`,
+        effect: insight,
+      },
+    ])
+  }
+
   const handleUseBonus = () => {
     if (bonusCards <= 0 || currentStage !== 'prioritize') {
       return
@@ -696,68 +693,6 @@ function App() {
           </div>
         </header>
 
-        <section className="modern-hero">
-          <div>
-            <p className="modern-kicker">Control Room</p>
-            <h1>Product impact, live and measurable.</h1>
-            <p className="modern-hero-copy">
-              A modern command center for product outcomes, experiments, and leadership wins.
-              Select a tile to open the active brief.
-            </p>
-          </div>
-          <div className="modern-stat-strip">
-            {statStrip.map((stat) => (
-              <div key={stat.label} className="modern-stat">
-                <span>{stat.label}</span>
-                <strong>{stat.value}</strong>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="control-room">
-          <div className="control-tiles">
-            {tileData.map((tile) => (
-              <button
-                key={tile.id}
-                type="button"
-                className={`control-tile${tile.id === activeTile.id ? ' is-active' : ''}`}
-                onClick={() => setActiveId(tile.id)}
-              >
-                <div>
-                  <p className="control-label">{tile.label}</p>
-                  <h2>{tile.title}</h2>
-                </div>
-                <span className="control-stat">{tile.stat}</span>
-              </button>
-            ))}
-          </div>
-
-          <aside className="control-brief" aria-live="polite">
-            <div className="control-brief-header">
-              <div>
-                <p className="control-label">Active brief</p>
-                <h2>{activeTile.title}</h2>
-              </div>
-              <span className="control-live">Live</span>
-            </div>
-            <p className="control-summary">{activeTile.summary}</p>
-            <ul className="control-list">
-              {activeTile.bullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
-            </ul>
-            <div className="control-actions">
-              <button type="button" className="modern-button">
-                Open case study
-              </button>
-              <button type="button" className="modern-button modern-button--ghost">
-                See timeline
-              </button>
-            </div>
-          </aside>
-        </section>
-
         <section className="resume-split">
           <aside className="resume-aside">
             <div className="resume-panel">
@@ -806,8 +741,49 @@ function App() {
                   target="_blank"
                   rel="noreferrer"
                 >
+                  <img src={kmpiBadge} alt="KMPI Certificate badge" />
                   <span>KMPI Certificate (PDF)</span>
                 </a>
+              </div>
+              <div className="resume-divider" />
+              <p className="modern-kicker">Skills</p>
+              <p className="resume-subtitle">Tools</p>
+              <div className="resume-tags">
+                <span>Jira</span>
+                <span>Confluence</span>
+                <span>Tableau</span>
+                <span>Indicative</span>
+                <span>SQL Developer</span>
+                <span>Figma</span>
+                <span>Adobe Photoshop</span>
+              </div>
+              <p className="resume-subtitle">Product Skills</p>
+              <div className="resume-tags">
+                <span>Agile</span>
+                <span>Scrum</span>
+                <span>A/B Testing</span>
+                <span>Roadmapping</span>
+                <span>KPI Definition</span>
+              </div>
+              <div className="resume-divider" />
+              <p className="modern-kicker">Languages</p>
+              <div className="resume-languages">
+                <div>
+                  <span>German</span>
+                  <strong>Native</strong>
+                </div>
+                <div>
+                  <span>English</span>
+                  <strong>Fluent</strong>
+                </div>
+                <div>
+                  <span>French</span>
+                  <strong>Basic</strong>
+                </div>
+                <div>
+                  <span>Spanish</span>
+                  <strong>Basic</strong>
+                </div>
               </div>
             </div>
           </aside>
@@ -993,6 +969,70 @@ function App() {
               </div>
             </div>
           )}
+          {showDiceModal && (
+            <div className="simulator-modal" role="dialog" aria-modal="true">
+              <div className="simulator-modal-card">
+                <p className="modern-kicker">Dice tray</p>
+                <h2>Roll for outcomes</h2>
+                <p>
+                  {requiredAction === 'research'
+                    ? 'Run research first to unlock your sprint roll.'
+                    : 'Roll the sprint dice to set how many tickets move.'}
+                </p>
+                <div className="simulator-modal-actions">
+                  {requiredAction === 'research' ? (
+                    <button
+                      type="button"
+                      className="modern-button"
+                      onClick={handleRollResearch}
+                      disabled={Boolean(refinementRoll)}
+                    >
+                      Run research
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="modern-button"
+                      onClick={handleRollDice}
+                      disabled={diceRolled || diceRolling}
+                    >
+                      {currentStage === 'refinement' ? 'Start sprint roll' : 'Roll dice'}
+                    </button>
+                  )}
+                </div>
+                {(diceResult || diceRolling) && (
+                  <div className="simulator-dice-result simulator-dice-result--modal">
+                    <span className={`dice-face${diceRolling ? ' is-rolling' : ''}`}>
+                      {diceDisplay}
+                    </span>
+                    <p>{diceEffect}</p>
+                  </div>
+                )}
+                {currentStage === 'refinement' && (
+                  <div className="simulator-panel">
+                    {refinementRoll ? (
+                      <div className="simulator-panel-note">
+                        <span>Research roll {refinementRoll}</span>
+                        <p>{refinementInsight}</p>
+                      </div>
+                    ) : (
+                      <div className="simulator-panel-note">
+                        <span>Research required</span>
+                        <p>Run research to unlock sprint dice.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className="modern-button modern-button--ghost"
+                  onClick={() => setShowDiceModal(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
           <div className="simulator-header">
             <div>
               <p className="modern-kicker">Project Simulator</p>
@@ -1026,12 +1066,15 @@ function App() {
                     const isNext =
                       simulatorSteps[simulationStep + 1]?.id === column.id
                     const isCollapsed = column.id === 'prioritize' ? false : !(isActive || isNext)
+                    const isHighlight = lastMovedStage === column.id
                     return (
                       <div
                         key={column.id}
                         className={`simulator-column simulator-column--wide${
                           isActive ? ' is-active' : ''
-                        }${isNext ? ' is-next' : ''}${isCollapsed ? ' is-collapsed' : ''}`}
+                        }${isNext ? ' is-next' : ''}${isCollapsed ? ' is-collapsed' : ''}${
+                          isHighlight ? ' is-highlight' : ''
+                        }`}
                       >
                         <div className="simulator-column-header">
                           <span className="simulator-column-state" aria-hidden="true">
@@ -1057,6 +1100,23 @@ function App() {
                           >
                             <p className="simulator-tag">{ticket.tag}</p>
                             <h3>{ticket.title}</h3>
+                            {ticket.clarity && (
+                              <div className="simulator-badges">
+                                <span className={`simulator-badge simulator-badge--${ticket.clarity}`}>
+                                  Clarity: {ticket.clarity}
+                                </span>
+                                {ticket.impactDelta > 0 && (
+                                  <span className="simulator-badge simulator-badge--impact">
+                                    Impact +{ticket.impactDelta}
+                                  </span>
+                                )}
+                                {ticket.riskDelta > 0 && (
+                                  <span className="simulator-badge simulator-badge--risk">
+                                    Risk +{ticket.riskDelta}
+                                  </span>
+                                )}
+                              </div>
+                            )}
                             <div className="simulator-inline-controls">
                               <div className="simulator-inline-group">
                                 <span>Impact</span>
@@ -1131,12 +1191,15 @@ function App() {
                   const isNext =
                     simulatorSteps[simulationStep + 1]?.id === column.id
                   const isCollapsed = !(isActive || isNext)
+                  const isHighlight = lastMovedStage === column.id
                   return (
                     <div
                       key={column.id}
                       className={`simulator-column${isActive ? ' is-active' : ''}${
                         isNext ? ' is-next' : ''
-                      }${isCollapsed ? ' is-collapsed' : ''}`}
+                      }${isCollapsed ? ' is-collapsed' : ''}${
+                        isHighlight ? ' is-highlight' : ''
+                      }`}
                       onDragOver={(event) => event.preventDefault()}
                       onDrop={handleDropStage(column.id)}
                     >
@@ -1168,6 +1231,25 @@ function App() {
                               >
                                 <p className="simulator-tag">{ticket.tag}</p>
                                 <h3>{ticket.title}</h3>
+                                {ticket.clarity && (
+                                  <div className="simulator-badges">
+                                    <span
+                                      className={`simulator-badge simulator-badge--${ticket.clarity}`}
+                                    >
+                                      Clarity: {ticket.clarity}
+                                    </span>
+                                    {ticket.impactDelta > 0 && (
+                                      <span className="simulator-badge simulator-badge--impact">
+                                        Impact +{ticket.impactDelta}
+                                      </span>
+                                    )}
+                                    {ticket.riskDelta > 0 && (
+                                      <span className="simulator-badge simulator-badge--risk">
+                                        Risk +{ticket.riskDelta}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
                           <p className="simulator-detail">{ticket.detail}</p>
                         </article>
                       ))}
@@ -1183,7 +1265,7 @@ function App() {
                         {!refinementRoll && (
                           <div className="simulator-panel-note">
                             <span>Research pending</span>
-                            <p>Roll the dice to reveal customer clarity.</p>
+                            <p>Roll the research dice to reveal customer clarity.</p>
                           </div>
                         )}
                       </div>
@@ -1197,61 +1279,84 @@ function App() {
                 <div className="simulator-group simulator-group--delivery">
                   <div className="simulator-group-header">Delivery</div>
                   <div className="simulator-group-body simulator-group-body--delivery">
-                {deliveryColumns.map((column) => (
-                  <div
-                    key={column.id}
-                    className={`simulator-column${
-                      column.id === currentStage ? ' is-active' : ''
-                    }${
-                      simulatorSteps[simulationStep + 1]?.id === column.id
-                        ? ' is-next'
-                        : ''
-                    }${
-                      column.id !== currentStage &&
-                      simulatorSteps[simulationStep + 1]?.id !== column.id
-                        ? ' is-collapsed'
-                        : ''
-                    }`}
-                    onDragOver={(event) => event.preventDefault()}
-                    onDrop={handleDropStage(column.id)}
-                  >
-                    <div className="simulator-column-header">
-                      <span className="simulator-column-state" aria-hidden="true">
-                        {column.id !== currentStage &&
-                        simulatorSteps[simulationStep + 1]?.id !== column.id
-                          ? '▸'
-                          : '▾'}
-                      </span>
-                      <p>{column.label}</p>
-                      <span className="simulator-column-count">
-                        {ticketsByStage[column.id]?.length ?? 0}
-                      </span>
-                    </div>
-                        <div className="simulator-column-body">
-                          {ticketsByStage[column.id]?.map((ticket) => (
-                            <article
-                              key={ticket.id}
-                              className={`simulator-card${
-                                column.id === 'release' && ticket.id === lastReleasedId
-                                  ? ' is-released'
-                                  : ''
-                              }${ticket.id === activeTicketId ? ' is-active' : ''}${
-                                ticket.id === lastMovedId ? ' is-moved' : ''
-                              }`}
-                          draggable={canDragTicket(ticket)}
-                          aria-disabled={!canDragTicket(ticket)}
-                            onDragStart={(event) => {
-                              event.dataTransfer.setData('text/plain', ticket.id)
-                            }}
-                            >
-                              <p className="simulator-tag">{ticket.tag}</p>
-                              <h3>{ticket.title}</h3>
-                              <p className="simulator-detail">{ticket.detail}</p>
-                            </article>
-                          ))}
+                    {deliveryColumns.map((column) => {
+                      const isHighlight = lastMovedStage === column.id
+                      return (
+                        <div
+                          key={column.id}
+                          className={`simulator-column${
+                            column.id === currentStage ? ' is-active' : ''
+                          }${
+                            simulatorSteps[simulationStep + 1]?.id === column.id
+                              ? ' is-next'
+                              : ''
+                          }${
+                            column.id !== currentStage &&
+                            simulatorSteps[simulationStep + 1]?.id !== column.id
+                              ? ' is-collapsed'
+                              : ''
+                          }${isHighlight ? ' is-highlight' : ''}`}
+                          onDragOver={(event) => event.preventDefault()}
+                          onDrop={handleDropStage(column.id)}
+                        >
+                          <div className="simulator-column-header">
+                            <span className="simulator-column-state" aria-hidden="true">
+                              {column.id !== currentStage &&
+                              simulatorSteps[simulationStep + 1]?.id !== column.id
+                                ? '▸'
+                                : '▾'}
+                            </span>
+                            <p>{column.label}</p>
+                            <span className="simulator-column-count">
+                              {ticketsByStage[column.id]?.length ?? 0}
+                            </span>
+                          </div>
+                          <div className="simulator-column-body">
+                            {ticketsByStage[column.id]?.map((ticket) => (
+                              <article
+                                key={ticket.id}
+                                className={`simulator-card${
+                                  column.id === 'release' &&
+                                  ticket.id === lastReleasedId
+                                    ? ' is-released'
+                                    : ''
+                                }${ticket.id === activeTicketId ? ' is-active' : ''}${
+                                  ticket.id === lastMovedId ? ' is-moved' : ''
+                                }`}
+                                draggable={canDragTicket(ticket)}
+                                aria-disabled={!canDragTicket(ticket)}
+                                onDragStart={(event) => {
+                                  event.dataTransfer.setData('text/plain', ticket.id)
+                                }}
+                              >
+                                <p className="simulator-tag">{ticket.tag}</p>
+                                <h3>{ticket.title}</h3>
+                                {ticket.clarity && (
+                                  <div className="simulator-badges">
+                                    <span
+                                      className={`simulator-badge simulator-badge--${ticket.clarity}`}
+                                    >
+                                      Clarity: {ticket.clarity}
+                                    </span>
+                                    {ticket.impactDelta > 0 && (
+                                      <span className="simulator-badge simulator-badge--impact">
+                                        Impact +{ticket.impactDelta}
+                                      </span>
+                                    )}
+                                    {ticket.riskDelta > 0 && (
+                                      <span className="simulator-badge simulator-badge--risk">
+                                        Risk +{ticket.riskDelta}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                                <p className="simulator-detail">{ticket.detail}</p>
+                              </article>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               </div>
@@ -1264,24 +1369,7 @@ function App() {
                 </p>
               </div>
               <div className="simulator-dice">
-                <button
-                  type="button"
-                  className={`modern-button modern-button--ghost${
-                    requiredAction === 'roll' ? ' is-required' : ''
-                  }`}
-                  onClick={handleRollDice}
-                  disabled={!hasStarted || diceRolled || diceRolling}
-                >
-                  Roll dice
-                </button>
-                {(diceResult || diceRolling) && (
-                  <div className="simulator-dice-result">
-                    <span className={`dice-face${diceRolling ? ' is-rolling' : ''}`}>
-                      {diceDisplay}
-                    </span>
-                    <p>{diceEffect}</p>
-                  </div>
-                )}
+                {diceResult && <p className="simulator-dice-summary">{diceEffect}</p>}
               </div>
               <div className="simulator-steps">
                 {simulatorSteps.map((step, index) => (
