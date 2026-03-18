@@ -59,36 +59,68 @@ const languagePins = [
   },
 ]
 
-const Home = () => {
+const Home = ({ activeSection }) => {
   const [activePin, setActivePin] = useState(null)
+
+  const contactPanel = (
+    <section className="pip-panel" id="contact">
+      <header className="pip-header">
+        <h2>Contact</h2>
+        <p>Open to new product challenges and collaborations.</p>
+      </header>
+      <div className="pip-body">
+        <div className="pip-rows">
+          <div className="pip-row">
+            <span className="pip-label">Phone</span>
+            <span className="pip-dots" aria-hidden="true" />
+            <span className="pip-value contact-item">
+              <img className="contact-icon" src={phoneIcon} alt="" aria-hidden="true" />
+              Available on request
+            </span>
+          </div>
+          <div className="pip-row">
+            <span className="pip-label">Email</span>
+            <span className="pip-dots" aria-hidden="true" />
+            <span className="pip-value contact-item">
+              <img className="contact-icon" src={emailIcon} alt="" aria-hidden="true" />
+              stevensternberg2105@gmail.com
+            </span>
+          </div>
+          <div className="pip-row">
+            <span className="pip-label">LinkedIn</span>
+            <span className="pip-dots" aria-hidden="true" />
+            <span className="pip-value contact-item">
+              <img className="contact-icon" src={linkedinIcon} alt="" aria-hidden="true" />
+              <a
+                href="https://www.linkedin.com/in/steven-sternberg-10180691/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                linkedin.com/in/steven-sternberg-10180691
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 
   return (
     <div className="page">
-      <header className="hero" id="profile">
-        <div>
-          <div className="hero-spacer" aria-hidden="true" />
-        </div>
-      </header>
-
+      {activeSection === 'profile' && (
       <section className="pip-root" id="cv">
-        <header className="pip-root-header">
-          <h2>Steven Sternberg</h2>
-          <p>
-            I turn customer problems into measurable outcomes through strategy,
-            stakeholder alignment, and decisive prioritization.
-          </p>
-        </header>
         <div className="pip-root-grid">
           <section className="pip-column" id="profile-panel">
-            <header className="pip-column-header">
-              <h3>Profile</h3>
-            </header>
             <div className="pip-column-body">
               <div className="pip-avatar-card">
                 <AvatarSprite />
-                <div>
-                  <p className="pip-avatar-title">Character Base</p>
-                  <p className="pip-avatar-subtitle">Leveling through product milestones.</p>
+                <div className="pip-avatar-copy">
+                  <p className="pip-avatar-kicker">Product Leader</p>
+                  <h1 className="pip-avatar-name">Steven Sternberg</h1>
+                  <p className="pip-avatar-subtitle">
+                    I turn customer problems into measurable outcomes through strategy,
+                    stakeholder alignment, and decisive prioritization.
+                  </p>
                   <div className="pip-avatar-meta">
                     <p>Berlin, Germany</p>
                     <p>10+ years in B2C/B2B SaaS, streaming, and marketplaces</p>
@@ -96,51 +128,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <section className="pip-panel" id="contact">
-                <header className="pip-header">
-                  <h2>Contact</h2>
-                  <p>Open to new product challenges and collaborations.</p>
-                </header>
-                <div className="pip-body">
-                  <div className="pip-rows">
-                    <div className="pip-row">
-                      <span className="pip-label">Phone</span>
-                      <span className="pip-dots" aria-hidden="true" />
-                      <span className="pip-value contact-item">
-                        <img className="contact-icon" src={phoneIcon} alt="" aria-hidden="true" />
-                        Available on request
-                      </span>
-                    </div>
-                    <div className="pip-row">
-                      <span className="pip-label">Email</span>
-                      <span className="pip-dots" aria-hidden="true" />
-                      <span className="pip-value contact-item">
-                        <img className="contact-icon" src={emailIcon} alt="" aria-hidden="true" />
-                        stevensternberg2105@gmail.com
-                      </span>
-                    </div>
-                    <div className="pip-row">
-                      <span className="pip-label">LinkedIn</span>
-                      <span className="pip-dots" aria-hidden="true" />
-                      <span className="pip-value contact-item">
-                        <img
-                          className="contact-icon"
-                          src={linkedinIcon}
-                          alt=""
-                          aria-hidden="true"
-                        />
-                        <a
-                          href="https://www.linkedin.com/in/stevensternberg"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          linkedin.com/in/stevensternberg
-                        </a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </section>
+              {contactPanel}
 
               <section className="pip-panel" id="hobbies">
                 <header className="pip-header">
@@ -201,18 +189,12 @@ const Home = () => {
                       </div>
                     ))}
                   </div>
-                  <a className="pip-cta" href="#languages">
-                    Open Language Map
-                  </a>
                 </div>
               </section>
             </div>
           </section>
 
           <section className="pip-column" id="role">
-            <header className="pip-column-header">
-              <h3>Senior Product Manager</h3>
-            </header>
             <div className="pip-column-body">
               <section className="pip-panel" id="experience">
                 <header className="pip-header">
@@ -231,9 +213,6 @@ const Home = () => {
                       </div>
                     ))}
                   </div>
-                  <a className="pip-cta" href="#career">
-                    Launch Career Quest
-                  </a>
                 </div>
               </section>
 
@@ -308,7 +287,7 @@ const Home = () => {
                       <span className="pip-label">Tools</span>
                       <span className="pip-dots" aria-hidden="true" />
                       <span className="pip-value">
-                        Jira, Confluence, Tableau, Indicative, SQL Dev, Figma, Photoshop
+                        Jira, Confluence, Tableau, SQL Developer, Figma, AI Coding Agents
                       </span>
                     </div>
                     <div className="pip-row">
@@ -321,85 +300,133 @@ const Home = () => {
                   </div>
                 </div>
               </section>
+
+              <section className="pip-panel" id="ai-workflow">
+                <header className="pip-header">
+                  <h2>AI Workflow</h2>
+                  <p>Automation and acceleration across discovery and delivery.</p>
+                </header>
+                <div className="pip-body">
+                  <div className="pip-rows">
+                    <div className="pip-row">
+                      <span className="pip-label">Research</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Synthesis and insight clustering</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Requirements</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">PRD drafts and experiment plans</span>
+                    </div>
+                    <div className="pip-row">
+                      <span className="pip-label">Automation</span>
+                      <span className="pip-dots" aria-hidden="true" />
+                      <span className="pip-value">Reports, roadmaps, summaries</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
           </section>
         </div>
       </section>
+      )}
 
+      {activeSection === 'languages' && (
       <section className="cv-section" id="languages">
         <div className="cv-heading">
-          <h2>Languages</h2>
-          <p>Global collaboration and customer empathy.</p>
+          <div>
+            <h2>Languages</h2>
+            <p>Global collaboration and customer empathy.</p>
+          </div>
         </div>
-        <div className="language-map">
-          <div className="language-map-figure">
-            <img
-              src={worldMap}
-              alt="World map with country labels"
-              className="language-map-image"
-            />
-            {languagePins.map((pin) => {
-              const isActive = activePin === pin.id
-              return (
-              <div
-                key={pin.id}
-                className={`language-pin level-${pin.strength} pin-${pin.side}${
-                  isActive ? ' is-active' : ''
-                }`}
-                style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-                onClick={() => {
-                  setActivePin(isActive ? null : pin.id)
-                }}
-              >
-                <div className="language-pin-indicator">
-                  <span className="pin-pulse" />
-                  <img src={pin.flag} alt={`${pin.label} flag`} />
-                </div>
-                <div
-                  className="language-pin-card"
-                  style={{
-                    '--card-offset': `${pin.offset || 0}px`,
-                  }}
-                >
-                  <div className="language-pin-label">
-                    <span>{pin.label}</span>
-                  </div>
-                  <div className="language-pin-meter">
-                    <span className="meter-text">{pin.level}</span>
-                    <div className="meter-dots">
-                      {[1, 2, 3, 4].map((step) => (
-                        <span
-                          key={step}
-                          className={`meter-dot${step <= pin.strength ? ' is-on' : ''}`}
-                        />
-                      ))}
+        <div className="language-map" id="language-map-panel">
+          <div className="language-map-canvas">
+            <div className="language-map-toolbar">
+              <span className="language-map-kicker">Map View</span>
+              <p>Tap a flag to inspect proficiency.</p>
+            </div>
+            <div className="language-map-figure">
+              <img
+                src={worldMap}
+                alt="World map with country labels"
+                className="language-map-image"
+              />
+              {languagePins.map((pin) => {
+                const isActive = activePin === pin.id
+                return (
+                  <button
+                    key={pin.id}
+                    type="button"
+                    className={`language-pin level-${pin.strength} pin-${pin.side}${
+                      isActive ? ' is-active' : ''
+                    }`}
+                    style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
+                    onClick={() => {
+                      setActivePin(isActive ? null : pin.id)
+                    }}
+                    aria-label={`${pin.label} ${pin.level}`}
+                  >
+                    <div className="language-pin-indicator">
+                      <span className="pin-pulse" />
+                      <img src={pin.flag} alt="" aria-hidden="true" />
                     </div>
-                  </div>
-                </div>
-              </div>
-              )
-            })}
+                    <div
+                      className="language-pin-card"
+                      style={{
+                        '--card-offset': `${pin.offset || 0}px`,
+                      }}
+                    >
+                      <div className="language-pin-label">
+                        <span>{pin.label}</span>
+                      </div>
+                      <div className="language-pin-meter">
+                        <span className="meter-text">{pin.level}</span>
+                        <div className="meter-dots">
+                          {[1, 2, 3, 4].map((step) => (
+                            <span
+                              key={step}
+                              className={`meter-dot${step <= pin.strength ? ' is-on' : ''}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
+      )}
 
-      <footer className="footer">
-        <div>
-          <h2>Now</h2>
-          <p>
-            Principal PM at Zattoo, leading stakeholder alignment and roadmap
-            prioritization for DTC growth.
+      {activeSection === 'ai' && (
+      <section className="ai-proof" id="ai-proof">
+        <div className="ai-proof-copy">
+          <p className="ai-proof-kicker">AI-Assisted Product Work</p>
+          <h2>This portfolio is part of the story.</h2>
+          <p className="ai-proof-lead">
+            I use AI to improve workflows, sharpen thinking, and move from idea to
+            execution faster. This Pip-Boy experience is not just a concept. It is a
+            working example of how I use AI to turn an idea into something tangible,
+            interactive, and tailored to a clear narrative.
+          </p>
+          <p className="ai-proof-text">
+            For me, AI is most valuable when it strengthens product work: structuring
+            concepts, drafting assets, accelerating iteration, and expanding what one
+            person can prototype without losing direction or quality.
           </p>
         </div>
-        <div>
-          <h2>Focus</h2>
-          <p>Conversion optimization, monetization, and team enablement.</p>
-        </div>
-        <div>
-          <h2>Highlights</h2>
-          <p>Product, streaming, marketplaces, and growth outcomes.</p>
-        </div>
-      </footer>
+      </section>
+      )}
+
+      {activeSection === 'contact' && (
+      <section className="contact-shell">
+        {contactPanel}
+      </section>
+      )}
+
     </div>
   )
 }

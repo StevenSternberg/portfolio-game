@@ -8,6 +8,10 @@
     "dev:pip-boy": "VITE_THEME=pip-boy vite",
     "build": "vite build",
     "build:pip-boy": "VITE_THEME=pip-boy vite build",
+    "build:modern-slate": "VITE_THEME=modern-slate vite build",
+    "export:cv-pdf": "bash ./scripts/export-cv-pdf.sh",
+    "baseline:cv-pdf": "bash ./scripts/baseline-cv-pdf.sh",
+    "check:cv-pdf": "bash ./scripts/check-cv-pdf.sh",
     "lint": "eslint .",
     "preview": "vite preview",
     "preview:pip-boy": "VITE_THEME=pip-boy vite preview"
@@ -26,6 +30,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "playwright": "^1.58.2",
     "vite": "^7.2.4"
   }
 }

@@ -104,6 +104,13 @@ p {
   font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--accent);
+  overflow: hidden;
+}
+
+.modern-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .modern-name {
@@ -150,6 +157,36 @@ p {
   font-size: 11px;
   text-transform: uppercase;
   color: var(--ink);
+}
+
+.modern-social--link {
+  width: auto;
+  min-width: 30px;
+  padding: 0 10px;
+  text-decoration: none;
+}
+
+.modern-link-list {
+  display: grid;
+  gap: 6px;
+}
+
+.modern-link-row {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.modern-link-row strong {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.modern-link-row a {
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 .modern-kicker {
@@ -325,6 +362,21 @@ p {
   background: rgba(248, 250, 252, 0.7);
   align-items: center;
   justify-items: center;
+}
+
+.resume-ai-copy {
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.resume-ai-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--ink-muted);
+  font-size: 12px;
 }
 
 .resume-hobby {
@@ -1216,4 +1268,102 @@ p {
     flex: 1 1 auto;
   }
 
+}
+
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+@media print {
+  :root {
+    background: #ffffff;
+  }
+
+  body {
+    background: #ffffff !important;
+    font-size: 10.5pt;
+  }
+
+  .modern-shell {
+    min-height: auto;
+    display: block;
+    padding: 0;
+  }
+
+  .modern-page {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .modern-header {
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+
+  .resume-split {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.45fr);
+    gap: 8px;
+    align-items: start;
+  }
+
+  .modern-header,
+  .resume-panel,
+  .resume-section,
+  .resume-role {
+    box-shadow: none !important;
+  }
+
+  .resume-panel,
+  .resume-section {
+    padding: 12px 14px;
+    border-radius: 14px;
+    gap: 10px;
+  }
+
+  .resume-role {
+    padding: 10px 12px;
+    border-radius: 12px;
+    gap: 6px;
+  }
+
+  .resume-certs,
+  .resume-hobbies,
+  .resume-tags,
+  .resume-timeline {
+    gap: 6px;
+  }
+
+  .resume-cert,
+  .resume-hobby {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .resume-cert img {
+    max-height: 70px;
+  }
+
+  .modern-kicker,
+  .resume-subtitle,
+  .resume-role-meta,
+  .resume-role-header span,
+  .resume-tags span,
+  .resume-languages,
+  .resume-ai-list,
+  .resume-role ul,
+  .resume-copy {
+    font-size: 9pt;
+    line-height: 1.35;
+  }
+
+  .resume-panel h2,
+  .resume-section h3 {
+    font-size: 13pt;
+  }
+
+  .modern-link-row a {
+    text-decoration: none;
+  }
 }

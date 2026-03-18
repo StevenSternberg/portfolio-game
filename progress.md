@@ -1,0 +1,68 @@
+Original prompt: I want to work on my pip boy web page. Especially on the game part. Could you look at it and we can create a backlog of features that you could introduce by yourself
+
+- Reviewed the Pip-Boy portfolio theme and created `BACKLOG_PIP_BOY_GAME.md`.
+- Found foundation issues before feature work:
+- Inline Phaser scene inside `CareerGame.jsx`.
+- Lint errors in `src/themes/pip-boy/pages/Career.jsx` and `vite.config.js`.
+- No automated gameplay hooks yet.
+- Current task: stabilize the game component and get lint/build back to green before adding new features.
+- Refactored `CareerGame.jsx` so the Phaser scene is defined at module scope instead of inline inside the React component.
+- Added `window.render_game_to_text` and a first pass at `window.advanceTime(ms)` for future automated testing.
+- Replaced the `showMore` reset effect in `Career.jsx` with explicit selection handlers.
+- Updated `PixelLogo.jsx` effect dependencies.
+- Removed `process.cwd()` from `vite.config.js` by switching to `loadEnv(mode, '.', '')`.
+- Verification:
+- `npm run lint` passes.
+- `npm run build:pip-boy` passes.
+- Added a gameplay onboarding pass:
+- New start overlay inside `CareerGame.jsx` with explicit quest goal and desktop/touch control hints.
+- Added HUD objective and progress panels.
+- Added animated milestone unlock toast keyed from `lastCollectedId`.
+- Added page-level quest briefing cards in `Career.jsx`.
+- Added unlock status banner in the detail popup.
+- Verification after UX pass:
+- `npm run lint` passes.
+- `npm run build:pip-boy` passes.
+- Open technical follow-up:
+- Playwright-based gameplay testing still is not installed locally, so the new debug hooks are prepared but not yet exercised by an automated browser test.
+- The production build still has a very large game chunk and heavy art assets. Performance optimization should be a separate pass.
+- Recommended next feature pass:
+- Convert milestone activation from passive collision-only behavior to explicit proximity + interact feedback so role cards feel intentional and accidental opens are reduced.
+- Enemy integration pass:
+- Wired enemy assets into `CareerGame.jsx` via `enemySprites.js`.
+- Added generated frame-texture loading for irregular extracted enemy sheets.
+- Added first Glitch-Bug behavior: short-range teleport harassment near the player.
+- Added first Legacy Beast behavior: slow late-stage blocker with patrol motion.
+- Added player/enemy overlap reaction with knockback and warning text.
+- Extended `render_game_to_text` with enemy positions/types.
+- Verification after enemy pass:
+- `npm run lint` passes.
+- `npm run build:pip-boy` passes.
+- Open follow-up:
+- The current enemy pass uses the extracted enemy sheets already in the repo, not the newer image snippets shared in chat.
+- The Stakeholder is not in gameplay yet.
+- Enemy combat currently uses knockback only; no health, attack resolution, or projectile system yet.
+- Sprite centering pass:
+- Switched Glitch Bug and Legacy Beast from raw Gemini canvases to the centered rebuilt sheets in `src/assets/enemies/rebuilt/`.
+- Updated Phaser loading to use sprite-sheet frame dimensions instead of manual crop textures.
+- Enemy collision bodies were nudged to match the tighter centered artwork.
+- Verification after sprite centering pass:
+- `npm run lint` passes.
+- `npm run build:pip-boy` passes.
+- Browser screenshots captured from the Career page (`output/web-game/career-shell*.png`) show the Glitch Bug sprite visible in the live game scene instead of rendering off-frame.
+- Follow-up after user feedback:
+- The enemy label was visible before the character because the Glitch Bug was placed too low against the painted city background.
+- Raised the Glitch Bug into open air, switched enemy anchoring/origin to better match the art, and increased enemy scales for readability.
+- Verified with direct Phaser-canvas screenshots in `output/web-game/game-canvas-fixed.png` and `output/web-game/game-canvas-scaled.png`.
+- Art-first readability pass:
+- Removed the floating enemy name boxes so the enemy designs carry the scene visually.
+- Increased Glitch Bug and Legacy Beast sprite scale to better reflect the artwork shared in chat.
+- Verified with `output/web-game/game-canvas-art-first.png`.
+- Visibility verification pass:
+- Added a dedicated visible art layer synced to enemy physics bodies so enemy visuals render reliably.
+- Moved the first Glitch Bug into the opening area near the hero and switched it to larger default frames.
+- Verified with `output/web-game/verify-near-hero-visible-layer.png`; the first bug is now clearly visible next to the hero.
+- Enemy removal pass:
+- Removed enemy loading, spawning, collision, and update logic from `CareerGame.jsx`.
+- The Career game is back to milestone traversal only.
+- Verification: `npm run lint` passes and `npm run build:pip-boy` passes.

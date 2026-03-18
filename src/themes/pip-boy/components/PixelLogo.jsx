@@ -56,7 +56,7 @@ const PixelLogo = ({
       ctx.imageSmoothingEnabled = false
       ctx.drawImage(offscreen, 0, 0, smallWidth, smallHeight, 0, 0, targetWidth, targetHeight)
     }
-  }, [src, size, pixelSize])
+  }, [height, pixelSize, size, src, width])
 
   return (
     <canvas

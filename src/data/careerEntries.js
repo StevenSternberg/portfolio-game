@@ -89,7 +89,7 @@ const careerEntries = [
     outcome: 'Led DTC growth focus across strategy, experiments, and teams.',
     highlights: [
       'Principal Product Manager DTC (Jan 2025 - Present).',
-      'Senior Product Owner DTC (Aug 2020 - Dec 2020).',
+      'Senior Product Owner DTC (Aug 2020 - Dec 2024).',
       'Optimized acquisition and retention via experiments.',
       'Defined roadmaps aligned with OKRs and product strategy.',
       'Built Tableau dashboards for decision-making.',

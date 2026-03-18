@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import CareerGame from '../components/CareerGame'
 import PixelLogo from '../components/PixelLogo'
 import careerEntries from '../../../data/careerEntries'
@@ -8,6 +8,11 @@ const Career = () => {
   const [collectedIds, setCollectedIds] = useState([])
   const [lastCollectedId, setLastCollectedId] = useState(null)
   const [showMore, setShowMore] = useState(false)
+
+  const handleSelectEntry = (entry) => {
+    setActiveEntry(entry)
+    setShowMore(false)
+  }
 
   const stats = useMemo(() => {
     const base = {
@@ -33,10 +38,6 @@ const Career = () => {
     setLastCollectedId(id)
   }
 
-  useEffect(() => {
-    setShowMore(false)
-  }, [activeEntry])
-
   const visibleHighlights = activeEntry ? activeEntry.highlights.slice(0, 3) : []
   const extraHighlights = activeEntry ? activeEntry.highlights.slice(3) : []
 
@@ -45,7 +46,6 @@ const Career = () => {
       <section className="career-shell">
         <header className="career-shell-header">
           <div className="career-shell-title">
-            <p className="career-shell-kicker">Career path</p>
             <h1>Career Quest</h1>
           </div>
           <p className="career-shell-subtitle">
@@ -54,23 +54,13 @@ const Career = () => {
           </p>
         </header>
 
-        <section className="career-intro">
-          <div className="career-intro-copy">
-            <h2>Play as Steven</h2>
-            <p>
-              Navigate the timeline as a character. Touch each milestone to reveal
-              the story behind the role.
-            </p>
-          </div>
-        </section>
-
         <section className="career-stage">
           <CareerGame
             entries={careerEntries}
             collectedIds={collectedIds}
             lastCollectedId={lastCollectedId}
             onCollect={handleCollect}
-            onSelect={setActiveEntry}
+            onSelect={handleSelectEntry}
           />
 
         {activeEntry && (
@@ -81,21 +71,9 @@ const Career = () => {
                 type="button"
                 onClick={() => setActiveEntry(null)}
                 aria-label="Close details"
-              >
-                ×
-              </button>
-              <div className="career-popup-header">
-                <div>
-                  <p className="career-company">{activeEntry.company}</p>
-                  <h3 className="career-role">{activeEntry.role}</h3>
-                </div>
-                <div className="career-level">
-                  <span>Level</span>
-                  <strong>
-                    {Math.max(collectedIds.length, 1)}/{careerEntries.length}
-                  </strong>
-                </div>
-              </div>
+                >
+                  ×
+                </button>
               <div className="career-card-top">
                 <PixelLogo
                   src={activeEntry.logo}
@@ -107,34 +85,30 @@ const Career = () => {
                     activeEntry.company === 'Zattoo' ? 'rgba(255, 255, 255, 0.9)' : undefined
                   }
                 />
-                <div>
+                <div className="career-card-main">
+                  <p className="career-company">{activeEntry.company}</p>
+                  <h3 className="career-role">{activeEntry.role}</h3>
                   <p className="career-period">{activeEntry.period}</p>
                   <div className="career-tags">
                     <span className="career-tag">{activeEntry.badge}</span>
-                    <span className="career-tag">{activeEntry.stat}</span>
                   </div>
-                  {activeEntry.url && (
-                    <a
-                      className="career-link"
-                      href={activeEntry.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Visit company site
-                    </a>
-                  )}
+                </div>
+                <div className="career-card-meta">
+                  <div className="career-meta-pill">
+                    <span className="career-meta-label">Progress</span>
+                    <strong className="career-meta-value">
+                      {collectedIds.length}/{careerEntries.length}
+                    </strong>
+                  </div>
+                  <div className="career-meta-pill">
+                    <span className="career-meta-label">Milestone</span>
+                    <strong className="career-meta-value">
+                      {collectedIds.includes(activeEntry.id) ? 'Unlocked' : 'Preview'}
+                    </strong>
+                  </div>
                 </div>
               </div>
               <div className="career-popup-body">
-                <ul className="career-list">
-                  {visibleHighlights.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                  {showMore &&
-                    extraHighlights.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                </ul>
                 <div className="career-popup-side">
                   <div className="career-outcome">
                     <p>Outcome</p>
@@ -144,6 +118,19 @@ const Career = () => {
                     <div className="career-trophy">
                       <img src={activeEntry.trophy} alt={`${activeEntry.badge} trophy`} />
                       <span>{activeEntry.badge} unlocked</span>
+                    </div>
+                  )}
+                  {showMore && (
+                    <div className="career-details-drawer">
+                      <p className="career-details-title">Role Details</p>
+                      <ul className="career-list">
+                        {visibleHighlights.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                        {extraHighlights.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
@@ -184,21 +171,6 @@ const Career = () => {
                     {showMore ? 'Show less' : 'More details'}
                   </button>
                 )}
-                <button
-                  className="career-action"
-                  type="button"
-                  onClick={() => {
-                    const index = careerEntries.findIndex((entry) => entry.id === activeEntry.id)
-                    const nextEntry = careerEntries[index + 1]
-                    if (nextEntry) {
-                      setActiveEntry(nextEntry)
-                    } else {
-                      setActiveEntry(null)
-                    }
-                  }}
-                >
-                  Next milestone
-                </button>
                 {activeEntry.url && (
                   <a
                     className="career-action career-action--ghost"
@@ -210,45 +182,10 @@ const Career = () => {
                   </a>
                 )}
               </div>
-              {activeEntry.trophy && (
-                <div className="career-trophy-badge">
-                  <img src={activeEntry.trophy} alt="" />
-                </div>
-              )}
             </div>
           </div>
         )}
         </section>
-      </section>
-
-      <section className="logo-strip">
-        <div>
-          <h2>Companies</h2>
-          <p>Pixel-art logos that anchor the timeline visually.</p>
-        </div>
-        <div className="logo-grid">
-          {careerEntries.map((entry) => (
-            <a
-              className="logo-card"
-              key={entry.id}
-              href={entry.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <PixelLogo
-                src={entry.logo}
-                alt={`${entry.company} logo`}
-                width={220}
-                height={140}
-                pixelSize={2}
-                backgroundColor={
-                  entry.company === 'Zattoo' ? 'rgba(255, 255, 255, 0.9)' : undefined
-                }
-              />
-              <span>{entry.company}</span>
-            </a>
-          ))}
-        </div>
       </section>
     </div>
   )
