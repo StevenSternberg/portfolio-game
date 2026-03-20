@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+/output/web-game/*
+!/output/web-game/.gitignore
