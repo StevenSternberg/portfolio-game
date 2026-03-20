@@ -343,8 +343,45 @@ const Home = ({ activeSection }) => {
         <div className="language-map" id="language-map-panel">
           <div className="language-map-canvas">
             <div className="language-map-toolbar">
-              <span className="language-map-kicker">Map View</span>
-              <p>Tap a flag to inspect proficiency.</p>
+              <span className="language-map-kicker language-map-kicker--desktop">Map View</span>
+              <span className="language-map-kicker language-map-kicker--mobile">Language Overview</span>
+              <p className="language-map-toolbar-copy language-map-toolbar-copy--desktop">
+                Tap a flag to inspect proficiency.
+              </p>
+              <p className="language-map-toolbar-copy language-map-toolbar-copy--mobile">
+                Language overview for international collaboration.
+              </p>
+            </div>
+            <div className="language-mobile-list" aria-label="Language proficiency list">
+              <div className="language-mobile-intro">
+                <span className="language-mobile-eyebrow">Language Matrix</span>
+                <p>Built for international teams, user research, and cross-market collaboration.</p>
+              </div>
+              {languagePins.map((pin) => (
+                <article className="language-mobile-card" key={`mobile-${pin.id}`}>
+                  <div className="language-mobile-head">
+                    <img src={pin.flag} alt="" aria-hidden="true" />
+                    <div>
+                      <div className="language-mobile-name">{pin.label}</div>
+                      <div className="language-mobile-level">{pin.level}</div>
+                    </div>
+                  </div>
+                  <div
+                    className="language-battery-inline"
+                    aria-label={`${pin.label} proficiency ${pin.level}`}
+                  >
+                    <span className="language-battery-cells">
+                      {[1, 2, 3, 4].map((step) => (
+                        <span
+                          key={step}
+                          className={`language-battery-cell${step <= pin.strength ? ' is-on' : ''}`}
+                        />
+                      ))}
+                    </span>
+                    <span className="language-battery-cap" aria-hidden="true" />
+                  </div>
+                </article>
+              ))}
             </div>
             <div className="language-map-figure">
               <img

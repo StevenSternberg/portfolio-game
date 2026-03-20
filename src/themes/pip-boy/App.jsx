@@ -4,11 +4,11 @@ import Career from './pages/Career'
 import Home from './pages/Home'
 
 const sections = [
-  { id: 'profile', label: 'Profile', meta: 'Base stats' },
-  { id: 'career', label: 'Career', meta: 'Quest log' },
-  { id: 'languages', label: 'Languages', meta: 'Map view' },
-  { id: 'ai', label: 'AI Workflow', meta: 'Build system' },
-  { id: 'contact', label: 'Contact', meta: 'Signal link' },
+  { id: 'profile', label: 'Profile', shortLabel: 'Profile', meta: 'Base stats' },
+  { id: 'career', label: 'Career', shortLabel: 'Quest', meta: 'Quest log' },
+  { id: 'languages', label: 'Languages', shortLabel: 'Lang', meta: 'Map view' },
+  { id: 'ai', label: 'AI Workflow', shortLabel: 'AI', meta: 'Build system' },
+  { id: 'contact', label: 'Contact', shortLabel: 'Contact', meta: 'Signal link' },
 ]
 
 function App() {
@@ -69,7 +69,10 @@ function App() {
                       onKeyDown={(event) => handleTabKeyDown(event, index)}
                     >
                       <span className="browser-tab-copy">
-                        <span className="browser-tab-title">{section.label}</span>
+                        <span className="browser-tab-title">
+                          <span className="browser-tab-title-full">{section.label}</span>
+                          <span className="browser-tab-title-short">{section.shortLabel}</span>
+                        </span>
                         <span className="browser-tab-meta">{section.meta}</span>
                       </span>
                     </button>

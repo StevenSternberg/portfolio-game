@@ -9,6 +9,8 @@ const PLAYER_FRAME_WIDTH = 576
 const PLAYER_FRAME_HEIGHT = 928
 const PLAYER_SCALE = 0.11
 const DEFAULT_INFO_TEXT = 'Arrow keys to move. Space to jump. Land on logos.'
+const DESKTOP_JUMP_VELOCITY = -420
+const COMPACT_LANDSCAPE_JUMP_VELOCITY = -780
 
 const sceneStore = {
   callbacksRef: null,
@@ -71,6 +73,7 @@ class CareerScene extends Phaser.Scene {
     this.activeMilestone = null
     this.activeMarker = null
     this.spaceKey = null
+    this.compactLandscape = false
   }
 
   preload() {
@@ -91,20 +94,24 @@ class CareerScene extends Phaser.Scene {
 
     const entries = sceneStore.entries
     const { width, height } = this.scale
+    const compactLandscape = width > height && height <= 320
+    this.compactLandscape = compactLandscape
+    const topViewPadding = compactLandscape ? 180 : 0
     const levelWidth = Math.max(width, 360 * (entries.length + 1))
     let groundY = height * 0.78
-    const baseMarkerHeight = 92
+    const baseMarkerHeight = compactLandscape ? 72 : 92
 
     const skyScale = 0.6
-    const sky = this.add.image(0, 0, 'bg-sky')
+    const sky = this.add.image(0, compactLandscape ? -topViewPadding : 0, 'bg-sky')
     sky.setOrigin(0, 0)
-    sky.setDisplaySize(levelWidth, height * 0.7 * skyScale)
+    sky.setDisplaySize(levelWidth, (height + topViewPadding) * 0.7 * skyScale)
     sky.setScrollFactor(0)
     sky.setDepth(0)
 
     const midScale = 0.8
-    const midHeight = Math.round(height * 0.55 * midScale)
-    const mid = this.add.image(0, 0, 'bg-mid')
+    const midBaseHeight = Math.round(height * 0.55 * midScale)
+    const midHeight = Math.round((height + topViewPadding) * 0.55 * midScale)
+    const mid = this.add.image(0, compactLandscape ? -topViewPadding * 0.35 : 0, 'bg-mid')
     mid.setOrigin(0, 0)
     mid.setDisplaySize(levelWidth, midHeight)
     mid.setScrollFactor(0.35)
@@ -121,12 +128,13 @@ class CareerScene extends Phaser.Scene {
     fore.setScrollFactor(0.7)
     fore.setDepth(2)
 
-    this.cameras.main.setBounds(0, 0, levelWidth, height)
+    this.cameras.main.setBounds(0, -topViewPadding, levelWidth, height + topViewPadding)
     this.physics.world.setBounds(0, 0, levelWidth, height)
 
-    mid.setY(foreY - midHeight)
+    const midBaseY = foreY - midBaseHeight
+    mid.setY(midBaseY + (compactLandscape ? -topViewPadding * 0.15 : 0))
     const midFloorOffset = Math.round(height * 0.42)
-    groundY = mid.y + midFloorOffset
+    groundY = midBaseY + midFloorOffset
 
     const ground = this.add.rectangle(levelWidth / 2, groundY, levelWidth, 24, 0x101a30)
     this.physics.add.existing(ground, true)
@@ -140,7 +148,8 @@ class CareerScene extends Phaser.Scene {
     player.body.setSize(player.displayWidth * 0.5, player.displayHeight * 0.7, true)
     player.body.setCollideWorldBounds(true)
     player.body.setDrag(800, 0)
-    player.body.setMaxVelocity(260, 520)
+    player.body.setMaxVelocity(260, this.compactLandscape ? 900 : 520)
+    player.body.setGravityY(this.compactLandscape ? -120 : 0)
     player.setDepth(6)
     this.player = player
 
@@ -180,6 +189,11 @@ class CareerScene extends Phaser.Scene {
       })
     }
 
+    if (compactLandscape) {
+      this.cameras.main.setZoom(0.82)
+      this.cameras.main.setFollowOffset(0, 172)
+    }
+
     this.cameras.main.startFollow(player, true, 0.08, 0.08)
 
     const startX = 220
@@ -188,7 +202,21 @@ class CareerScene extends Phaser.Scene {
 
     this.milestones = entries.map((entry, index) => {
       const x = startX + step * index
-      const laneOffset = entry.lane === 1 ? 90 : 60
+      const platformLift = this.compactLandscape
+        ? entry.lane === 1
+          ? 42
+          : 28
+        : entry.lane === 1
+          ? 90
+          : 60
+      const markerLift = this.compactLandscape ? 28 : 46
+      const yearLift = this.compactLandscape ? 72 : 116
+      const companyLabelOffset = this.compactLandscape ? 10 : 14
+      const laneOffset = this.compactLandscape
+        ? platformLift
+        : entry.lane === 1
+          ? 90
+          : 60
       const y = groundY - laneOffset
 
       const platformWidth = 170
@@ -206,7 +234,7 @@ class CareerScene extends Phaser.Scene {
       const badgeAlpha = isZattoo ? 0.9 : 0.75
       const badge = this.add.rectangle(
         x,
-        y - 46,
+        y - markerLift,
         baseMarkerWidth + 16,
         baseMarkerHeight + 16,
         badgeColor,
@@ -215,18 +243,18 @@ class CareerScene extends Phaser.Scene {
       badge.setStrokeStyle(2, 0xfca311, 0.5)
       badge.setDepth(4)
 
-      const marker = this.add.image(x, y - 46, entry.logoKey)
+      const marker = this.add.image(x, y - markerLift, entry.logoKey)
       marker.setDisplaySize(baseMarkerWidth, baseMarkerHeight)
       marker.setDepth(5)
 
-      const tag = this.add.text(x - 40, y - 116, entry.year, {
+      const tag = this.add.text(x - 40, y - yearLift, entry.year, {
         fontFamily: '"Press Start 2P", monospace',
         fontSize: '10px',
         color: '#f8f5f2',
       })
       tag.setDepth(5)
 
-      const name = this.add.text(x - 56, y + 14, entry.company, {
+      const name = this.add.text(x - 56, y + companyLabelOffset, entry.company, {
         fontFamily: '"Space Grotesk", sans-serif',
         fontSize: '12px',
         color: '#fca311',
@@ -327,7 +355,9 @@ class CareerScene extends Phaser.Scene {
     }
 
     if (hasStarted && (this.spaceKey.isDown || input.jump) && body.blocked.down) {
-      body.setVelocityY(-420)
+      body.setVelocityY(
+        this.compactLandscape ? COMPACT_LANDSCAPE_JUMP_VELOCITY : DESKTOP_JUMP_VELOCITY,
+      )
     }
 
     if (!body.blocked.down) {
@@ -366,8 +396,29 @@ const CareerGame = ({
   const inputRef = useRef({ left: false, right: false, jump: false })
   const callbacksRef = useRef({ onCollect, onSelect })
   const startedRef = useRef(false)
+  const lastSizeRef = useRef({ width: 0, height: 0 })
   const [hasStarted, setHasStarted] = useState(false)
   const [metaOpen, setMetaOpen] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return undefined
+    }
+
+    const landscapeMobileQuery = window.matchMedia('(max-width: 900px) and (orientation: landscape)')
+    const syncAutoStart = () => {
+      if (landscapeMobileQuery.matches) {
+        setHasStarted(true)
+      }
+    }
+
+    syncAutoStart()
+    landscapeMobileQuery.addEventListener('change', syncAutoStart)
+
+    return () => {
+      landscapeMobileQuery.removeEventListener('change', syncAutoStart)
+    }
+  }, [])
 
   const latestEntry = useMemo(
     () => entries.find((entry) => entry.id === lastCollectedId) ?? null,
@@ -435,13 +486,49 @@ const CareerGame = ({
       }
 
       const { clientWidth, clientHeight } = containerRef.current
+      if (!clientWidth || !clientHeight) {
+        return
+      }
+
+      const widthChanged = Math.abs(clientWidth - lastSizeRef.current.width) > 2
+      const heightChanged = Math.abs(clientHeight - lastSizeRef.current.height) > 2
+
+      if (!widthChanged && !heightChanged) {
+        return
+      }
+
+      lastSizeRef.current = { width: clientWidth, height: clientHeight }
       gameRef.current.scale.resize(clientWidth, clientHeight)
+
+      const activeScene = gameRef.current.scene.getScene('career')
+      if (activeScene) {
+        activeScene.scene.restart()
+      }
     }
 
-    window.addEventListener('resize', handleResize)
+    const handleResponsiveResize = () => {
+      window.requestAnimationFrame(() => {
+        handleResize()
+        window.setTimeout(handleResize, 120)
+      })
+    }
+
+    window.addEventListener('resize', handleResponsiveResize)
+    window.addEventListener('orientationchange', handleResponsiveResize)
+    window.visualViewport?.addEventListener('resize', handleResponsiveResize)
+
+    const resizeObserver = new ResizeObserver(() => {
+      handleResponsiveResize()
+    })
+    resizeObserver.observe(containerRef.current)
+
+    handleResponsiveResize()
 
     return () => {
-      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('resize', handleResponsiveResize)
+      window.removeEventListener('orientationchange', handleResponsiveResize)
+      window.visualViewport?.removeEventListener('resize', handleResponsiveResize)
+      resizeObserver.disconnect()
       clearDebugHooks()
       game.destroy(true)
       gameRef.current = null
@@ -541,51 +628,65 @@ const CareerGame = ({
         </div>
       )}
       <div className="mobile-controls">
-        <button
-          type="button"
-          className="control-btn"
-          disabled={!hasStarted}
-          onPointerDown={() => {
-            inputRef.current.left = true
-          }}
-          onPointerUp={() => {
-            inputRef.current.left = false
-          }}
-          onPointerLeave={() => {
-            inputRef.current.left = false
-          }}
-        >
-          ◀
-        </button>
-        <button
-          type="button"
-          className="control-btn"
-          disabled={!hasStarted}
-          onPointerDown={() => {
-            inputRef.current.right = true
-          }}
-          onPointerUp={() => {
-            inputRef.current.right = false
-          }}
-          onPointerLeave={() => {
-            inputRef.current.right = false
-          }}
-        >
-          ▶
-        </button>
+        <div className="control-cluster control-cluster--move">
+          <button
+            type="button"
+            className="control-btn"
+            disabled={!hasStarted}
+            onPointerDown={(event) => {
+              event.preventDefault()
+              inputRef.current.left = true
+            }}
+            onPointerUp={(event) => {
+              event.preventDefault()
+              inputRef.current.left = false
+            }}
+            onPointerLeave={(event) => {
+              event.preventDefault()
+              inputRef.current.left = false
+            }}
+            onContextMenu={(event) => event.preventDefault()}
+          >
+            ◀
+          </button>
+          <button
+            type="button"
+            className="control-btn"
+            disabled={!hasStarted}
+            onPointerDown={(event) => {
+              event.preventDefault()
+              inputRef.current.right = true
+            }}
+            onPointerUp={(event) => {
+              event.preventDefault()
+              inputRef.current.right = false
+            }}
+            onPointerLeave={(event) => {
+              event.preventDefault()
+              inputRef.current.right = false
+            }}
+            onContextMenu={(event) => event.preventDefault()}
+          >
+            ▶
+          </button>
+        </div>
         <button
           type="button"
           className="control-btn control-jump"
           disabled={!hasStarted}
-          onPointerDown={() => {
+          onPointerDown={(event) => {
+            event.preventDefault()
             inputRef.current.jump = true
           }}
-          onPointerUp={() => {
+          onPointerUp={(event) => {
+            event.preventDefault()
             inputRef.current.jump = false
           }}
-          onPointerLeave={() => {
+          onPointerLeave={(event) => {
+            event.preventDefault()
             inputRef.current.jump = false
           }}
+          onContextMenu={(event) => event.preventDefault()}
         >
           ⤒
         </button>

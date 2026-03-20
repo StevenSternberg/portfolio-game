@@ -21,9 +21,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
 body {
+  margin: 0;
   background: radial-gradient(circle at top left, #12213d, #0b1020 50%);
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 h1,
@@ -34,12 +43,17 @@ h3 {
 
 .app-shell {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .app {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -47,6 +61,9 @@ h3 {
 }
 
 .workspace-shell {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 0;
@@ -57,6 +74,9 @@ h3 {
 .tab-shell {
   position: relative;
   z-index: 2;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 0;
   background: transparent;
   margin: 0 0 -1px;
@@ -65,6 +85,10 @@ h3 {
 .workspace-body {
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   border: 1px solid rgba(252, 163, 17, 0.42);
   border-radius: 0 24px 24px 24px;
   background: linear-gradient(160deg, rgba(12, 18, 35, 0.95), rgba(12, 18, 35, 0.68));
@@ -75,18 +99,24 @@ h3 {
   display: block;
   position: relative;
   z-index: 2;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
+  box-sizing: border-box;
   padding: 0;
 }
 
 .browser-tablist {
   display: flex;
   align-items: stretch;
+  width: 100%;
+  max-width: 100%;
   gap: 0;
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;
+  box-sizing: border-box;
   padding: 0;
 }
 
@@ -163,6 +193,10 @@ h3 {
   text-transform: uppercase;
 }
 
+.browser-tab-title-short {
+  display: none;
+}
+
 .browser-tab-meta {
   font-size: 10px;
   color: rgba(248, 245, 242, 0.55);
@@ -175,6 +209,10 @@ h3 {
 .section-stage {
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   margin: 0;
   padding: 16px;
   background:
@@ -463,10 +501,18 @@ h3 {
   color: var(--accent);
 }
 
+.language-map-kicker--mobile {
+  display: none;
+}
+
 .language-map-toolbar p {
   margin: 0;
   color: var(--ink-muted);
   font-size: 12px;
+}
+
+.language-map-toolbar-copy--mobile {
+  display: none;
 }
 
 .language-battery-inline {
@@ -514,6 +560,10 @@ h3 {
   object-fit: contain;
   opacity: 0.78;
   filter: saturate(0.8) contrast(1.02) brightness(0.88);
+}
+
+.language-mobile-list {
+  display: none;
 }
 
 
@@ -706,6 +756,18 @@ h3 {
   padding: 10px;
 }
 
+.career-mobile-flow {
+  display: none;
+}
+
+.career-mobile-rotate-overlay {
+  display: none;
+}
+
+.career-mobile-rotate-hint {
+  display: none;
+}
+
 .career-popup {
   position: absolute;
   inset: 0;
@@ -720,14 +782,25 @@ h3 {
 .career-popup-card {
   position: relative;
   width: min(680px, 90vw);
+  max-height: min(88vh, 860px);
   padding: 20px;
   border-radius: 22px;
   border: 1px solid var(--border);
   background: linear-gradient(160deg, rgba(12, 18, 35, 0.98), rgba(12, 18, 35, 0.7));
   box-shadow: 0 24px 60px rgba(2, 6, 23, 0.6);
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 14px;
   pointer-events: auto;
+  overflow: hidden;
+}
+
+.career-popup-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 6px;
 }
 
 .career-popup-close {
@@ -858,6 +931,9 @@ h3 {
   background: radial-gradient(circle at top, rgba(58, 134, 255, 0.2), transparent 55%);
   touch-action: pan-y;
   overscroll-behavior: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .game-meta-bar {
@@ -1063,6 +1139,14 @@ h3 {
   gap: 10px;
   z-index: 6;
   pointer-events: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.control-cluster {
+  display: flex;
+  gap: 10px;
 }
 
 .control-btn {
@@ -1075,6 +1159,10 @@ h3 {
   font-size: 22px;
   display: grid;
   place-items: center;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .control-btn:disabled {
@@ -1304,6 +1392,7 @@ h3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: 12px;
+  align-items: start;
 }
 
 .pip-column {
@@ -1577,6 +1666,18 @@ h3 {
 }
 
 @media (max-width: 900px) {
+  .app {
+    padding: 16px 16px 28px;
+  }
+
+  .workspace-body {
+    border-radius: 0 18px 18px 18px;
+  }
+
+  .section-stage {
+    padding: 14px;
+  }
+
   .browser-tab {
     min-width: 172px;
     max-width: 72vw;
@@ -1627,6 +1728,10 @@ h3 {
     padding-top: 72px;
   }
 
+  .game-shell {
+    min-height: clamp(540px, 72vh, 760px);
+  }
+
   .hud-right {
     justify-items: start;
     max-width: 100%;
@@ -1650,6 +1755,8 @@ h3 {
   .mobile-controls {
     display: flex;
     justify-content: space-between;
+    align-items: end;
+    width: calc(100% - 32px);
   }
 
   .game-toast {
@@ -1793,6 +1900,7 @@ h3 {
 @media (max-width: 980px) {
   .career-popup-card {
     width: min(640px, 92vw);
+    max-height: min(86vh, 780px);
     padding: 18px;
   }
 
@@ -1816,5 +1924,856 @@ h3 {
   .career-trophy img {
     width: 96px;
     height: 96px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 14px 14px 28px;
+  }
+
+  .tab-shell {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    margin-bottom: 12px;
+    padding-top: max(0px, env(safe-area-inset-top));
+    backdrop-filter: blur(14px);
+  }
+
+  .browser-tabs-row {
+    padding: 6px;
+    border: 1px solid rgba(252, 163, 17, 0.22);
+    border-radius: 18px;
+    background: rgba(8, 14, 28, 0.84);
+  }
+
+  .browser-tablist {
+    gap: 6px;
+  }
+
+  .browser-tab {
+    min-width: 104px;
+    max-width: none;
+    flex: 1 0 auto;
+    justify-content: center;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(248, 245, 242, 0.08);
+    border-bottom-color: rgba(248, 245, 242, 0.14);
+    background: rgba(12, 18, 35, 0.32);
+  }
+
+  .browser-tab-title {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .browser-tab-meta {
+    display: none;
+  }
+
+  .browser-tab-title-full {
+    display: none;
+  }
+
+  .browser-tab-title-short {
+    display: inline;
+  }
+
+  .browser-tab.is-active {
+    color: var(--accent);
+    border-color: rgba(252, 163, 17, 0.48);
+    border-bottom-color: rgba(252, 163, 17, 0.72);
+    background:
+      radial-gradient(circle at top center, rgba(252, 163, 17, 0.14), transparent 70%),
+      rgba(12, 18, 35, 0.9);
+    box-shadow:
+      inset 0 0 0 1px rgba(252, 163, 17, 0.16),
+      0 0 0 1px rgba(252, 163, 17, 0.18);
+  }
+
+  .browser-tab.is-active .browser-tab-title-short {
+    text-shadow: 0 0 10px rgba(252, 163, 17, 0.28);
+  }
+
+  .workspace-body {
+    border-radius: 18px;
+  }
+
+  .section-stage {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .page {
+    gap: 20px;
+  }
+
+  .pip-root,
+  .career-shell,
+  .ai-proof {
+    gap: 14px;
+  }
+
+  .pip-root {
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .pip-column,
+  .pip-panel,
+  .career-stage {
+    padding: 10px;
+  }
+
+  .pip-column {
+    border-radius: 16px;
+    background: rgba(10, 16, 32, 0.52);
+    gap: 10px;
+  }
+
+  #profile-panel .pip-column-body {
+    gap: 8px;
+  }
+
+  .pip-avatar-card {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: stretch;
+    align-items: start;
+    text-align: left;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at top left, rgba(252, 163, 17, 0.08), transparent 42%),
+      rgba(12, 18, 35, 0.76);
+  }
+
+  .pip-avatar-card img,
+  .pip-avatar-sprite {
+    width: min(104px, 28vw);
+  }
+
+  .pip-avatar-copy,
+  .pip-avatar-meta {
+    justify-items: start;
+  }
+
+  .pip-avatar-copy {
+    align-content: start;
+  }
+
+  .pip-avatar-name {
+    font-size: clamp(22px, 7vw, 30px);
+    max-width: 10ch;
+    line-height: 1.08;
+  }
+
+  .pip-avatar-kicker {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .pip-avatar-subtitle {
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: none;
+  }
+
+  .pip-avatar-meta {
+    width: 100%;
+    gap: 7px;
+    margin-top: 2px;
+  }
+
+  .pip-avatar-meta p {
+    width: 100%;
+    padding-top: 8px;
+    border-top: 1px solid rgba(248, 245, 242, 0.08);
+    font-size: 11px;
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+  }
+
+  .pip-panel {
+    gap: 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(248, 245, 242, 0.1);
+    background: rgba(12, 18, 35, 0.46);
+    box-shadow: inset 0 1px 0 rgba(248, 245, 242, 0.03);
+  }
+
+  .pip-header {
+    padding-bottom: 10px;
+    border-bottom-color: rgba(252, 163, 17, 0.18);
+  }
+
+  .pip-header h2 {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .pip-header p {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .pip-rows {
+    gap: 10px;
+  }
+
+  .pip-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    align-items: start;
+    padding: 10px 0;
+    border-top: 1px solid rgba(248, 245, 242, 0.06);
+  }
+
+  .pip-row:first-child {
+    padding-top: 2px;
+    border-top: 0;
+  }
+
+  .pip-dots {
+    display: none;
+  }
+
+  .pip-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(248, 245, 242, 0.54);
+  }
+
+  .pip-value {
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-item {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .contact-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    margin-top: 1px;
+  }
+
+  #profile-panel .pip-panel,
+  #role .pip-panel {
+    border-color: rgba(248, 245, 242, 0.12);
+  }
+
+  .language-map {
+    padding: 10px;
+  }
+
+  .language-map-canvas {
+    padding: 10px;
+  }
+
+  .language-map-toolbar p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .language-map-kicker--desktop {
+    display: none;
+  }
+
+  .language-map-kicker--mobile {
+    display: inline;
+  }
+
+  .language-map-toolbar-copy--desktop {
+    display: none;
+  }
+
+  .language-map-toolbar-copy--mobile {
+    display: block;
+  }
+
+  .language-map-figure {
+    display: none;
+  }
+
+  .language-mobile-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .language-mobile-intro {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(252, 163, 17, 0.18);
+    background:
+      radial-gradient(circle at top right, rgba(252, 163, 17, 0.12), transparent 40%),
+      rgba(12, 18, 35, 0.56);
+  }
+
+  .language-mobile-eyebrow {
+    font-family: "Press Start 2P", monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .language-mobile-intro p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .language-mobile-card {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(248, 245, 242, 0.16);
+    background: rgba(12, 18, 35, 0.6);
+  }
+
+  .language-mobile-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .language-mobile-head img {
+    width: 28px;
+    height: 18px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid rgba(248, 245, 242, 0.2);
+  }
+
+  .language-mobile-name {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .language-mobile-level {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--ink-muted);
+  }
+
+  .language-mobile-card .language-battery-inline {
+    margin-left: 0;
+  }
+
+  .career-shell-header {
+    padding: 4px 4px 10px;
+  }
+
+  .career-shell-title h1 {
+    font-size: 16px;
+  }
+
+  .career-shell-subtitle {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .career-stage {
+    padding: 12px;
+  }
+
+  .career-mobile-flow {
+    display: grid;
+    gap: 12px;
+  }
+
+  .career-mobile-rotate-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    padding: 16px;
+    background: linear-gradient(180deg, rgba(4, 7, 16, 0.72), rgba(4, 7, 16, 0.2));
+    backdrop-filter: blur(4px);
+  }
+
+  .career-mobile-rotate-hint {
+    display: grid;
+    gap: 8px;
+    width: min(320px, 100%);
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(252, 163, 17, 0.28);
+    background:
+      radial-gradient(circle at top left, rgba(252, 163, 17, 0.12), transparent 45%),
+      rgba(12, 18, 35, 0.96);
+    box-shadow:
+      0 24px 60px rgba(2, 6, 23, 0.52),
+      0 0 0 1px rgba(252, 163, 17, 0.08);
+  }
+
+  .career-mobile-rotate-hint h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .career-mobile-rotate-hint p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .career-mobile-intro {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(252, 163, 17, 0.18);
+    background:
+      radial-gradient(circle at top right, rgba(252, 163, 17, 0.12), transparent 42%),
+      rgba(12, 18, 35, 0.6);
+  }
+
+  .career-mobile-kicker {
+    font-family: "Press Start 2P", monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .career-mobile-intro h2 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .career-mobile-intro p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .career-mobile-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .career-mobile-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(248, 245, 242, 0.14);
+    background: rgba(12, 18, 35, 0.56);
+    color: var(--ink);
+    text-align: left;
+  }
+
+  .career-mobile-card.is-active,
+  .career-mobile-card.is-collected {
+    border-color: rgba(252, 163, 17, 0.34);
+    background:
+      radial-gradient(circle at top left, rgba(252, 163, 17, 0.1), transparent 38%),
+      rgba(12, 18, 35, 0.72);
+  }
+
+  .career-mobile-step {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(252, 163, 17, 0.24);
+    background: rgba(252, 163, 17, 0.08);
+    font-family: "Press Start 2P", monospace;
+    font-size: 9px;
+    color: var(--accent);
+  }
+
+  .career-mobile-copy {
+    display: grid;
+    gap: 8px;
+  }
+
+  .career-mobile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .career-mobile-company {
+    margin: 0;
+    font-family: "Press Start 2P", monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .career-mobile-badge {
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(248, 245, 242, 0.18);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+  }
+
+  .career-mobile-role {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .career-mobile-period {
+    margin: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+  }
+
+  .career-mobile-outcome {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .game-shell {
+    display: none;
+  }
+
+  .game-meta-bar {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .game-overlay {
+    padding: 64px 14px 14px;
+    gap: 10px;
+  }
+
+  .hud-title {
+    font-size: 10px;
+  }
+
+  .hud-text,
+  .hud-progress,
+  .hud-legend,
+  .hud-stats {
+    font-size: 10px;
+  }
+
+  .hud-trophy-row {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .game-start-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .game-start-card h3 {
+    font-size: 18px;
+  }
+
+  .game-start-list {
+    font-size: 11px;
+  }
+
+  .mobile-controls {
+    inset: auto 12px 12px;
+  }
+
+  .control-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .control-jump {
+    width: 64px;
+    height: 64px;
+  }
+
+  .career-popup {
+    align-items: end;
+    padding: 12px;
+  }
+
+  .career-popup-card {
+    width: 100%;
+    max-height: min(82vh, 680px);
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .career-popup-scroll {
+    padding-right: 2px;
+  }
+
+  .career-card-top {
+    grid-template-columns: 1fr;
+    padding-right: 36px;
+  }
+
+  .career-card-main {
+    gap: 4px;
+  }
+
+  .career-role {
+    font-size: 17px;
+    line-height: 1.35;
+  }
+
+  .career-card-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .career-popup-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .career-popup-actions {
+    display: grid;
+  }
+
+  .career-action {
+    text-align: center;
+  }
+
+  .ai-proof {
+    padding: 18px;
+  }
+
+  .ai-proof-copy h2 {
+    font-size: clamp(20px, 7vw, 30px);
+    line-height: 1.15;
+  }
+
+  .ai-proof-lead,
+  .ai-proof-text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .cv-grid,
+  .career-grid,
+  .footer {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .browser-tab {
+    min-width: 92px;
+    padding: 9px 10px;
+  }
+
+  .hero-links a,
+  .hero-cta,
+  .career-action,
+  .game-meta-toggle {
+    font-size: 10px;
+  }
+
+  .pip-label,
+  .pip-value,
+  .pip-header h2,
+  .pip-header p {
+    font-size: 11px;
+  }
+
+  .pip-label {
+    font-size: 9px;
+  }
+
+  .pip-row {
+    padding: 8px 0;
+  }
+
+  .game-shell {
+    display: none;
+  }
+
+  .pip-root {
+    padding: 8px;
+  }
+
+  .pip-avatar-card {
+    padding: 12px;
+    grid-template-columns: 1fr;
+  }
+
+  .pip-avatar-card img,
+  .pip-avatar-sprite {
+    width: 96px;
+  }
+
+  .pip-avatar-name {
+    font-size: 20px;
+  }
+
+  .pip-avatar-subtitle,
+  .pip-header p,
+  .pip-value {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .career-mobile-intro h2,
+  .career-mobile-rotate-hint h2 {
+    font-size: 18px;
+  }
+
+  .career-mobile-intro p,
+  .career-mobile-outcome,
+  .career-shell-subtitle,
+  .language-mobile-intro p,
+  .language-mobile-level {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+  .app {
+    padding: 8px;
+  }
+
+  .tab-shell {
+    margin-bottom: 6px;
+    padding-top: 0;
+  }
+
+  .browser-tabs-row {
+    padding: 4px;
+    border-radius: 14px;
+  }
+
+  .browser-tab {
+    min-width: 0;
+    padding: 8px 10px;
+  }
+
+  .browser-tab-title {
+    font-size: 9px;
+  }
+
+  .workspace-body {
+    border-radius: 14px;
+  }
+
+  .section-stage {
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .career-shell {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .career-shell-header {
+    display: none;
+  }
+
+  .career-stage {
+    padding: 6px;
+    border-radius: 16px;
+  }
+
+  .career-mobile-rotate-overlay {
+    display: none;
+  }
+
+  .career-mobile-rotate-hint {
+    display: none;
+  }
+
+  .career-mobile-flow {
+    display: none;
+  }
+
+  .game-shell {
+    display: block;
+    min-height: calc(100vh - 92px);
+    height: calc(100vh - 92px);
+    border-radius: 18px;
+  }
+
+  .game-start-panel {
+    display: none;
+  }
+
+  .game-meta-bar,
+  .hud,
+  .hud-right {
+    display: none;
+  }
+
+  .game-overlay {
+    padding: 10px 10px 10px;
+    gap: 6px;
+  }
+
+  .mobile-controls {
+    inset: auto 10px 10px;
+    width: calc(100% - 20px);
+  }
+
+  .control-cluster--move {
+    justify-content: flex-start;
+  }
+
+  .control-jump {
+    margin-left: auto;
+  }
+
+  .control-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .control-jump {
+    width: 58px;
+    height: 58px;
+  }
+
+  .hud-title {
+    font-size: 9px;
+  }
+
+  .hud-progress,
+  .hud-text,
+  .hud-legend {
+    font-size: 10px;
   }
 }
